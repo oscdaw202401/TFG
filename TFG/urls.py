@@ -20,5 +20,5 @@ from Plazeduca.views import inicio,home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',inicio),
-    path('home',home)
+    path('home',home,name="home")
 ]

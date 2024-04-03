@@ -7,7 +7,7 @@ class Alumnos(models.Model):
     nombre=models.CharField(max_length=50)
     apellidos=models.CharField(max_length=50)
     telefono=models.CharField(max_length=50)
-    fecha_nac=models.DateField()
+    fecha_nac=models.DateTimeField()
     email=models.EmailField(max_length=50)
     dirreccion=models.CharField(max_length=50)
     cursos=models.CharField(max_length=20)

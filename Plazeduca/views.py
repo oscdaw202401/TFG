@@ -15,8 +15,7 @@ def inicio(request):
     return render(request,'login.html',{'form':my_frm})
     
 def home(request):
-   
-    return render(request,'home.html')
+    return render(request,'contenido.html')
 
 def buscar_alumno(my_frm):
     try:
@@ -26,7 +25,7 @@ def buscar_alumno(my_frm):
     else:
         return alum
     
-def notas_al():
+def notas_al(request):
     try:
         notas=Notas.objects.get(dni_alumno=request.session["logueado"])
     except Alumnos.DoesNotExist:
