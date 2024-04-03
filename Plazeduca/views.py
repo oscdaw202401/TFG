@@ -15,7 +15,7 @@ def inicio(request):
     return render(request,'login.html',{'form':my_frm})
     
 def home(request):
-    return render(request,'contenido.html')
+    return render(request,'contenido.html',{"sesion":request.session["logueado"]})
 
 def buscar_alumno(my_frm):
     try:
