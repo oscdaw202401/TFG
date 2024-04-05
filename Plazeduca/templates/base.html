@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <!-- Para adaptar a los dispositivos móviles -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+   
+    <!-- JavaScript de Bootstrap -->
+    <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+    <!-- CSS de Bootstrap -->
+    <link
+      href="{% static 'bootstrap4/css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'bootstrap4/css/header__alumno.css' %}"
+      rel="stylesheet"
+    />
+</head>
+<style>
+        .contenido {
+            width: 40%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            padding: 5px;
+        }
+</style>
+<body>
+    <div class="contenido">
+            <!--{%block header%}{%endblock%}-->
+            {%block contenido %}{%endblock%}
+            <!--{%block footer%}{%endblock%}-->
+    </div>
+</body>
+
+</html>
