@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from Plazeduca.views import inicio,home
+from Plazeduca.views import inicio,base
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',inicio),
-    path('home',home,name="home")
+    path('base',base,name="base")
 ]

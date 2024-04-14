@@ -9,13 +9,14 @@ def inicio(request):
         if my_frm.is_valid():
             alum=buscar_alumno(my_frm)
             request.session['logueado']={"dni":alum.dni}
-            return redirect('home')
+            return redirect('base')
     else:
         my_frm=Login()
     return render(request,'login.html',{'form':my_frm})
     
-def home(request):
-    return render(request,'contenido.html',{"sesion":request.session["logueado"]})
+def base(request):
+    notas=notas_al(request)
+    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"],"notas":notas})
 
 def buscar_alumno(my_frm):
     try:
@@ -26,9 +27,10 @@ def buscar_alumno(my_frm):
         return alum
     
 def notas_al(request):
+    
     try:
-        notas=Notas.objects.get(dni_alumno=request.session["logueado"])
-    except Alumnos.DoesNotExist:
+        notas=Notas.objects.get(dni_alumno=request.session["logueado"]["dni"])
+    except Notas.DoesNotExist:
             return None
     else:
         return notas

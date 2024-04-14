@@ -1,0 +1,30 @@
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0;
+    background-color: #f8f9fa;
+    margin-left:2%;
+    margin-top:4%;
+    height:70%;
+  }
+  .sidebar_right {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    padding: 48px 0;
+    background-color: #f8f9fa;
+    margin-right:2%;
+    margin-top:4%;
+    height:70%;
+  }
+  .center-list {
+    margin: 0 auto; 
+    margin-top: 30%;
+    width:100%; 
+  }
