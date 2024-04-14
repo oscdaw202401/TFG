@@ -16,7 +16,7 @@ def inicio(request):
     
 def base(request):
     notas=notas_al(request)
-    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"],"notas":notas})
+    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"notas":notas})
 
 def buscar_alumno(my_frm):
     try:
@@ -29,7 +29,7 @@ def buscar_alumno(my_frm):
 def notas_al(request):
     
     try:
-        notas=Notas.objects.get(dni_alumno=request.session["logueado"]["dni"])
+        notas=Notas.objects.all()
     except Notas.DoesNotExist:
             return None
     else:

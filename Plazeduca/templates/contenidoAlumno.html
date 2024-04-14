@@ -25,15 +25,13 @@
     <div class="row">
       <div class="col-md-6 offset-md-3">
         <ul class="list-group center-list">
-         
+          
           <li class="list-group-item">Ultimas notas
-            {% if len(notas) > 1 %}
               {%for n in notas%}
-              <li>n.nota-n-nom_asignatura-n.fecha_subida</li> 
-            {%endfor%}
-            {%else%}
-            <li>n.nota-n-nom_asignatura-n.fecha_subida</li> 
-            {%endif%}
+                {%if n.dni_alumno == sesion%}
+                  <li>{{n.nota}}  {{n.nom_asignatura}}  {{n.fecha_subida | date:"d/m/Y"}}</li> 
+                {%endif%}
+              {%endfor%}
           </li>
           
           <li class="list-group-item">Ultimos trabajos</li>
