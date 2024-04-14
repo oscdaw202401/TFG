@@ -17,6 +17,10 @@
       href="{% static 'bootstrap4/css/bootstrap.min.css' %}"
       rel="stylesheet"
     />
+    <link
+      href="{% static 'bootstrap4/css/login.css' %}"
+      rel="stylesheet"
+    />
   <style>
     /* Estilos adicionales para el formulario */
     .login-form {
@@ -28,29 +32,47 @@
 </head>
 <body>
   
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="login-form">
-        <h2 class="text-center mb-4">Iniciar sesión</h2>
-        <form action="#" method="post">
-            {% csrf_token %}
-          <div class="form-group">
-            <label for="username">Usuario:</label>
-            <input type="text" class="form-control" id="usuario" name="usuario" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" class="form-control" id="contrasena" name="contrasena" required>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
+	<div class="container h-100">
+		<div class="d-flex justify-content-center h-100">
+			<div class="user_card">
+				<div class="d-flex justify-content-center">
+					<div class="brand_logo_container">
+						<img src="{% static 'img/plazeduca.png' %}" class="brand_logo" alt="Logo">
+					</div>
+				</div>
+				<div class="d-flex justify-content-center form_container">
+					<form>
+						<div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							<input type="text" name="" class="form-control input_user" value="" placeholder="Nombre usuario">
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+							<input type="password" name="" class="form-control input_pass" value="" placeholder="Contraseña">
+						</div>
+						<div class="form-group">
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="customControlInline">
+								<label class="custom-control-label" for="customControlInline">Recuerdame</label>
+							</div>
+						</div>
+							<div class="d-flex justify-content-center mt-3 login_container">
+				 	<button type="button" name="button" class="btn login_btn">Iniciar sesion</button>
+				   </div>
+					</form>
+				</div>
+		
+				<div class="mt-4">
+					<div class="d-flex justify-content-center links">
+						<a href="#">¿Has olvidado la contraseña?</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
