@@ -1,6 +1,7 @@
+from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import redirect, render
 from Plazeduca.forms import Login
-from Plazeduca.models import Alumnos, Notas
+from Plazeduca.models import Alumnos, Notas, Trabajos
 
 
 def inicio(request):
@@ -16,7 +17,13 @@ def inicio(request):
     
 def base(request):
     notas=notas_al(request)
-    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"notas":notas})
+    trabajos=trabajos_al(request)
+    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"notas":notas,"trabajos":trabajos})
+
+
+def cerrarS(request):
+    logout(request)
+    return redirect('login')
 
 def buscar_alumno(my_frm):
     try:
@@ -27,10 +34,19 @@ def buscar_alumno(my_frm):
         return alum
     
 def notas_al(request):
-    
     try:
         notas=Notas.objects.all()
     except Notas.DoesNotExist:
             return None
     else:
         return notas
+    
+def trabajos_al(request):
+    
+    try:
+        notas=Trabajos.objects.all()
+    except Notas.DoesNotExist:
+            return None
+    else:
+        return notas
+    

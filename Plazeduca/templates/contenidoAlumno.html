@@ -33,8 +33,12 @@
                 {%endif%}
               {%endfor%}
           </li>
-          
           <li class="list-group-item">Ultimos trabajos</li>
+             {%for t in trabajos%}
+                {%if t.dni_alumnos == sesion%}
+                  <li>{{t.trabajo}}  {{t.fecha_inicio | date:"d/m/Y"}}  {{t.fecha_entrega | date:"d/m/Y"}}</li> 
+                {%endif%}
+              {%endfor%}
           <li class="list-group-item">Incidencias</li>
           <li class="list-group-item">Anotaciones</li>
         </ul>
