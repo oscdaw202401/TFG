@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import redirect, render
 from Plazeduca.forms import Login
-from Plazeduca.models import Alumnos, Notas, Trabajos
+from Plazeduca.models import Alumnos, Notas, Profesor, Trabajos
 
 
 def inicio(request):
@@ -28,6 +28,11 @@ def cerrarS(request):
     logout(request)
     return redirect('login')
 
+
+def tutor(request):
+    tutor=buscar_tutor(request)
+    return render(request,'tutor.html',{"tutor":tutor})
+
 def buscar_alumno(my_frm):
     try:
         alum=Alumnos.objects.get(usuario=my_frm.cleaned_data["usuario"],password=my_frm.cleaned_data["contrasena"])
@@ -36,13 +41,24 @@ def buscar_alumno(my_frm):
     else:
         return alum
     
-def buscar_alumno(request):
+def buscar_alumno_dni(request):
     try:
         alum=Alumnos.objects.get(dni=request.session["logueado"]["dni"])
     except Alumnos.DoesNotExist:
             return None
     else:
         return alum
+
+def buscar_tutor(request):
+    try:
+        alum=buscar_alumno_dni(request)
+        tutor=Profesor.objects.get(tutoria=alum.cursos)
+    except Profesor.DoesNotExist:
+            return None
+    else:
+        return tutor
+        
+    
     
 def notas_al(request):
     try:

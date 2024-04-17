@@ -25,22 +25,10 @@
     <div class="row">
       <div class="col-md-6 offset-md-3">
         <ul class="list-group center-list">
-          
-          <li class="list-group-item">Ultimas notas
-              {%for n in notas%}
-                {%if n.dni_alumno == sesion%}
-                  <li>{{n.nota}}  {{n.nom_asignatura}}  {{n.fecha_subida | date:"d/m/Y"}}</li> 
-                {%endif%}
-              {%endfor%}
-          </li>
-          <li class="list-group-item">Ultimos trabajos</li>
-             {%for t in trabajos%}
-                {%if t.dni_alumnos == sesion%}
-                  <li>{{t.trabajo}}  {{t.fecha_inicio | date:"d/m/Y"}}  {{t.fecha_entrega | date:"d/m/Y"}}</li> 
-                {%endif%}
-              {%endfor%}
-          <li class="list-group-item">Incidencias</li>
-          <li class="list-group-item">Anotaciones</li>
+          {{tutor.nombre}} {{tutor.apellidos}}<br>
+          {{tutor.telefono}}<br>
+          {{tutor.email}}
+         
         </ul>
       </div>
     </div>
