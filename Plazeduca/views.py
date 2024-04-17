@@ -9,8 +9,11 @@ def inicio(request):
         my_frm=Login(request.POST)
         if my_frm.is_valid():
             alum=buscar_alumno(my_frm)
-            request.session['logueado']={"dni":alum.dni}
-            return redirect('base')
+            if(alum!=None):
+                request.session['logueado']={"dni":alum.dni}
+                return redirect('base')
+            else:
+                return render(request,'login.html',{'form':my_frm,'mensaje':"Nombre de usuario o contraseña incorrecto"})
     else:
         my_frm=Login()
     return render(request,'login.html',{'form':my_frm})
@@ -28,6 +31,14 @@ def cerrarS(request):
 def buscar_alumno(my_frm):
     try:
         alum=Alumnos.objects.get(usuario=my_frm.cleaned_data["usuario"],password=my_frm.cleaned_data["contrasena"])
+    except Alumnos.DoesNotExist:
+            return None
+    else:
+        return alum
+    
+def buscar_alumno(request):
+    try:
+        alum=Alumnos.objects.get(dni=request.session["logueado"]["dni"])
     except Alumnos.DoesNotExist:
             return None
     else:
