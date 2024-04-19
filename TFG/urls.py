@@ -16,11 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+<<<<<<< Updated upstream
 from Plazeduca.views import inicio,base,cerrarS,ver_perfil
+=======
+from Plazeduca.views import inicio,base,cerrarS,tutor, ver_notas
+>>>>>>> Stashed changes
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',inicio,name="login"),
     path('base',base,name="base"),
     path('cerrarSesion',cerrarS,name="cerrar"),
+<<<<<<< Updated upstream
     path('perfil',ver_perfil,name="perfil")
+=======
+    path('tutor',tutor,name="perfilTutor"),
+    path('notas',ver_notas,name="notas")
+>>>>>>> Stashed changes
 ]

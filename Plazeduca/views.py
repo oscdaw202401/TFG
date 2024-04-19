@@ -63,3 +63,14 @@ def trabajos_al(request):
     else:
         return notas
     
+def ver_notas(request):
+    calificaciones=buscar_notas(request)
+    return render(request,'calificaciones.html',{"calificaciones":calificaciones})
+
+def buscar_notas(request):
+    try:
+        alum=Notas.objects.get_queryset().filter(dni_alumno=request.session["logueado"]["dni"])
+    except Alumnos.DoesNotExist:
+            return None
+    else:
+        return alum
