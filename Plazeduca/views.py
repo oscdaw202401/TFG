@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import redirect, render
 from Plazeduca.forms import Login
-from Plazeduca.models import Alumnos, Notas, Profesor, Trabajos
+from Plazeduca.models import Alumnos, Asginaturas, Notas, Profesor, Trabajos
 
 
 def inicio(request):
@@ -23,11 +23,27 @@ def base(request):
     trabajos=trabajos_al(request)
     return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"notas":notas,"trabajos":trabajos})
 
+def asignaturas(request):
+    asig=buscarAsignaturas(request)
+    return render(request,'asignaturas.html',{"asig":asig})
 
 def cerrarS(request):
     logout(request)
     return redirect('login')
 
+def ver_perfil(request):
+    perfil=buscar_alumno_dni(request)
+    return render(request,'perfil.html',{"perfil":perfil})
+
+def buscarAsignaturas(request):
+    alum=buscar_alumno_dni(request)
+    try:
+        asig=Asginaturas.objects.all()
+    except Asginaturas.DoesNotExist:
+        return None
+    else:
+        return asig
+        
 
 def tutor(request):
     tutor=buscar_tutor(request)
@@ -62,7 +78,7 @@ def buscar_tutor(request):
     
 def notas_al(request):
     try:
-        notas=Notas.objects.all()
+        notas=Notas.objects.get_queryset().filter(dni_alumno=request.session["logueado"]["dni"])
     except Notas.DoesNotExist:
             return None
     else:
@@ -71,7 +87,7 @@ def notas_al(request):
 def trabajos_al(request):
     
     try:
-        notas=Trabajos.objects.all()
+        notas=Trabajos.objects.get_queryset().filter(dni_alumnos=request.session["logueado"]["dni"])
     except Notas.DoesNotExist:
             return None
     else:

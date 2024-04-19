@@ -40,8 +40,8 @@ class Cursos(models.Model):
 class Asginaturas(models.Model):
     nombre=models.CharField(max_length=50,primary_key=True)
     horas_semanales=models.IntegerField()
-    dni_alumnos=models.CharField(max_length=9)
-    dni_profesor=models.CharField(max_length=9)
+    num_alumnos=models.IntegerField()
+    profesor=models.CharField(max_length=9)
     curso=models.CharField(max_length=20)
     
 class Notas(models.Model):
