@@ -1,85 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% load static %}
-  <head>
-    <title></title>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <!-- Para adaptar a los dispositivos móviles -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+{% load static %}
 
-    <!-- JavaScript de Bootstrap -->
-    <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
-    <!-- CSS de Bootstrap -->
-    <link
-      href="{% static 'bootstrap4/css/bootstrap.min.css' %}"
-      rel="stylesheet"
-    />
-    <link
-      href="{% static 'bootstrap4/css/contenidoAlumno.css' %}"
-      rel="stylesheet"
-    />
-    <link
-      href="{% static 'bootstrap4/css/footer.css' %}"
-      rel="stylesheet"
-    />
-  </head>
-  <style>
-    .contenido {
-      width: 40%;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 20px;
-      padding: 5px;
-    }
-  </style>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Plazeduca</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'base' %}">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Trabajos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Calificaciones</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pedir tutoria</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Perfil</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{%url 'cerrar' %}">Cerrar Sesión</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="contenido">{%block contenido %}{%endblock%}</div>
-    <footer>
-      <div class="container">
-        <span>Derechos de autor &copy; 2024 - Plazeduca</span>
-      </div>
-    </footer>
-  </body>
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <!-- Para adaptar a los dispositivos móviles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- JavaScript de Bootstrap -->
+  <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+  <!-- CSS de Bootstrap -->
+  <link href="{% static 'bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'bootstrap4/css/contenidoAlumno.css' %}" rel="stylesheet" />
+  <link href="{% static 'bootstrap4/css/footer.css' %}" rel="stylesheet" />
+  <link href="{% static 'bootstrap4/css/header.css' %}" rel="stylesheet" />
+</head>
+<style>
+  .contenido {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 5px;
+  }
+</style>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <img src="{% static 'image/login.png' %}" width="70" height="60">
+    <a class="navbar-brand" href="#">Plazeduca</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'base' %}">Inicio <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Trabajos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Calificaciones</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pedir tutoria</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Perfil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{%url 'cerrar' %}">Cerrar Sesión</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="contenido">{%block contenido %}{%endblock%}</div>
+  <footer>
+    <div class="container">
+      <span>Derechos de autor &copy; 2024 - Plazeduca</span>
+    </div>
+  </footer>
+</body>
+
 </html>
