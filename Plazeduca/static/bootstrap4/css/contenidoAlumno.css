@@ -28,3 +28,10 @@
     margin-top: 30%;
     width:100%; 
   }
+  #contenedor{
+    margin-top: 30px;
+    width: 1000px;
+  }
+  .camp{
+    width: 100px;
+  }
