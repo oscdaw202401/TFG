@@ -1,4 +1,79 @@
 {%extends 'base.html' %}{%block contenido%}
+{% load static %}
+<style>
+  .camp{
+    width: 250px;
+    height:250px;
+    margin-left:20px;
+  }
+  .exa{
+    width: 250px;
+    height:250px;
+  }
+  .inc{
+    width:300px;
+    height:400px;
+    margin-bottom:200px;
+  }
+  #sombra{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  img:hover {
+    transform:scale(1.1);
+    transition:1s;
+  }
+  img{
+    transform:scale(1);
+    transition:1s;
+  }
+</style>
+
+<div class="row" id="contenedor">
+  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+    <img
+    src="{% static 'image/examen.png' %}"
+      class="exa shadow-1-strong rounded mb-4"
+      alt="Boat on Calm Water"
+      id="sombra"
+    />
+    <img
+    src="{% static 'image/libros.jpg' %}"
+      class="w-100 shadow-1-strong rounded mb-4"
+      id="sombra"
+    />
+  </div>
+
+  <div class="col-lg-4 mb-4 mb-lg-0">
+    <img
+    src="{% static 'image/exclamacion.png' %}"
+      class="inc shadow-1-strong rounded mb-4"
+      id="sombra"
+    />
+
+    <img
+    src="{% static 'image/tutor.jpg' %}"
+      class="w-100 shadow-1-strong rounded mb-4"
+      id="sombra"
+    />
+  </div>
+
+  <div class="col-lg-4 mb-4 mb-lg-0">
+    <img
+    src="{% static 'image/campana.png' %}"
+      class="camp shadow-1-strong rounded mb-4"
+      id="sombra"
+    />
+
+    <img
+    src="{% static 'image/calendario.jpg' %}"
+      class="w-100 shadow-1-strong rounded mb-4"
+      id="sombra"
+    />
+    
+  </div>
+</div>
 
 <div class="container-fluid">
   <div class="row">
@@ -12,7 +87,7 @@
             <a class="nav-link" href="#"> Trabajos </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> Asignaturas </a>
+            <a class="nav-link" href="{% url 'asignaturas' %}"> Asignaturas </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"> Boletín de notas </a>
@@ -21,23 +96,23 @@
       </div>
     </nav>
   </div>
-  <div class="container">
+ <!-- <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3">
         <ul class="list-group center-list">
           
           <li class="list-group-item">Ultimas notas
               {%for n in notas%}
-                {%if n.dni_alumno == sesion%}
+              
                   <li>{{n.nota}}  {{n.nom_asignatura}}  {{n.fecha_subida | date:"d/m/Y"}}</li> 
-                {%endif%}
+              
               {%endfor%}
           </li>
           <li class="list-group-item">Ultimos trabajos</li>
              {%for t in trabajos%}
-                {%if t.dni_alumnos == sesion%}
+              
                   <li>{{t.trabajo}}  {{t.fecha_inicio | date:"d/m/Y"}}  {{t.fecha_entrega | date:"d/m/Y"}}</li> 
-                {%endif%}
+               
               {%endfor%}
           <li class="list-group-item">Incidencias</li>
           <li class="list-group-item">Anotaciones</li>
@@ -46,21 +121,22 @@
     </div>
   </div>
   <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar_right">
+    -->
+   <!-- <nav class="col-md-2 d-none d-md-block bg-light sidebar_right">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link" href="#"> Calendario </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> Tutor </a>
+            <a class="nav-link" href="{% url 'perfilTutor' %}"> Tutor </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"> Comunicados </a>
           </li>
         </ul>
       </div>
-    </nav>
+    </nav>-->
   </div>
   
 </div>

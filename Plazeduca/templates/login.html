@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+<<<<<<< HEAD
     {% load static %}
 <head>
   <meta charset="UTF-8">
@@ -32,32 +33,85 @@
 </head>
 <body>
   
+=======
+{% load static %}
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Iniciar sesión</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+	<!-- JavaScript de Bootstrap -->
+	<script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+	<!-- CSS de Bootstrap -->
+	<link href="{% static 'bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet" />
+	<link href="{% static 'bootstrap4/css/login.css' %}" rel="stylesheet" />
+	<link href="{% static 'bootstrap4/css/footer.css' %}" rel="stylesheet" />
+	<style>
+		/* Estilos adicionales para el formulario */
+		.login-form {
+			max-width: 400px;
+			margin: 0 auto;
+			margin-top: 50px;
+		}
+	</style>
+</head>
+
+<body>
+
+>>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
 	<div class="container h-100">
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
 				<div class="d-flex justify-content-center">
 					<div class="brand_logo_container">
+<<<<<<< HEAD
 						<img src="{% static 'img/plazeduca.png' %}" class="brand_logo" alt="Logo">
 					</div>
 				</div>
 				<div class="d-flex justify-content-center form_container">
 					<form>
+=======
+						<img src="{% static 'image/login.png' %}" class="brand_logo" alt="Logo">
+					</div>
+				</div>
+				<div class="d-flex justify-content-center form_container">
+					<form action="#" method="post">
+						{% csrf_token %}
+>>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
 						<div class="input-group mb-3">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
+<<<<<<< HEAD
 							<input type="text" name="" class="form-control input_user" value="" placeholder="Nombre usuario">
+=======
+							<input type="text" class="form-control input_user" id="usuario" name="usuario" required
+								placeholder="Nombre usuario">
+>>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
+<<<<<<< HEAD
 							<input type="password" name="" class="form-control input_pass" value="" placeholder="Contraseña">
+=======
+							<input type="password" class="form-control input_pass" id="contrasena" name="contrasena"
+								placeholder="Contraseña">
+								{% if mensaje %}
+								<p>
+								{{mensaje}}
+								</p>
+								{%endif%}
+>>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
 						</div>
 						<div class="form-group">
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input" id="customControlInline">
 								<label class="custom-control-label" for="customControlInline">Recuerdame</label>
+<<<<<<< HEAD
 							</div>
 						</div>
 							<div class="d-flex justify-content-center mt-3 login_container">
@@ -66,6 +120,19 @@
 					</form>
 				</div>
 		
+=======
+								
+							</div>
+						</div>
+
+						<div class="d-flex justify-content-center mt-3 login_container">
+							<button type="submit" name="button" class="btn login_btn">Iniciar sesion</button>
+
+						</div>
+					</form>
+				</div>
+
+>>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
 						<a href="#">¿Has olvidado la contraseña?</a>
@@ -75,4 +142,5 @@
 		</div>
 	</div>
 </body>
+
 </html>
