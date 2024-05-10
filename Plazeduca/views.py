@@ -21,7 +21,8 @@ def inicio(request):
 def base(request):
     notas=notas_al(request)
     trabajos=trabajos_al(request)
-    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"notas":notas,"trabajos":trabajos})
+    perfil=buscar_alumno_dni(request)
+    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"notas":notas,"trabajos":trabajos,"perfil":perfil})
 
 def asignaturas(request):
     asig=buscarAsignaturas(request)
@@ -33,7 +34,7 @@ def cerrarS(request):
 
 def ver_perfil(request):
     perfil=buscar_alumno_dni(request)
-    return render(request,'perfil.html',{"perfil":perfil})
+    return render(request,'base.html',{"perfil":perfil})
 
 def buscarAsignaturas(request):
     alum=buscar_alumno_dni(request)
