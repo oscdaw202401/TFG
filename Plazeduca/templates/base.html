@@ -26,14 +26,14 @@
 <script type="text/JavaScript">
   function ver() {
     var x = document.getElementById("perfil");
-    if (x.style.display == "block") {
-        x.style.transition= display "none", linear;
-        //x.style.display = "none";
+    x.classList.toggle("mostrar");
+    if (x.classList.contains("mostrar")) {
+        x.classList.remove("esconder");
     } else {
-      x.style.transition= display "block", linear;
-        //x.style.display = "block";
+        x.classList.add("esconder");
     }
 }
+
 </script>
 
 <style>
@@ -76,9 +76,28 @@
   float: right;
   margin-top: 20px;
   background-color: #89e06989;
-  display: none;
-
+  opacity: 0;
 }
+#curso{
+  text-align: center;
+}
+.mostrar {
+  animation: mostrarAnimacion 0.75s forwards;
+}
+.esconder {
+  animation: esconderAnimacion 0.75s forwards;
+}
+@keyframes mostrarAnimacion {
+  0% { opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+@keyframes esconderAnimacion {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
 </style>
 
 <body>
@@ -120,7 +139,7 @@
     </div>
   </nav>
   <div class="col-lg-2 col-md-12 mb-4 mb-lg-0" id="perfil">
-    <h2>{{perfil.cursos}}</h2>
+    <h2 id="curso">{{perfil.cursos}}</h2>
     <div class="card" style="width: 18rem; ">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">{{perfil.dni}}</li>
@@ -130,8 +149,8 @@
         <li class="list-group-item">{{perfil.dirreccion}}</li>
         <li class="list-group-item">{{perfil.fecha_nac | date:"d/m/Y"}}</li>
       </ul>
-      
     </div>
+    <h2></h2>
   </div>
   <div class="contenido">{%block contenido %}{%endblock%}</div>
   
