@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import redirect, render
 from Plazeduca.forms import Login
-from Plazeduca.models import Alumnos, Asginaturas, Notas, Profesor, Trabajos
+from Plazeduca.models import Alumnos, Asignaturas, Notas, Profesor, Trabajos
 
 
 def inicio(request):
@@ -26,21 +26,19 @@ def base(request):
 
 def asignaturas(request):
     asig=buscarAsignaturas(request)
-    return render(request,'asignaturas.html',{"asig":asig})
+    perfil=buscar_alumno_dni(request)
+    return render(request,'asignaturas.html',{"asig":asig,"perfil":perfil})
 
 def cerrarS(request):
     logout(request)
     return redirect('login')
 
-def ver_perfil(request):
-    perfil=buscar_alumno_dni(request)
-    return render(request,'base.html',{"perfil":perfil})
 
 def buscarAsignaturas(request):
     alum=buscar_alumno_dni(request)
     try:
-        asig=Asginaturas.objects.all()
-    except Asginaturas.DoesNotExist:
+        asig=Asignaturas.objects.all()
+    except Asignaturas.DoesNotExist:
         return None
     else:
         return asig

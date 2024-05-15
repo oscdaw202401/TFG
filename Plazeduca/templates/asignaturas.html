@@ -25,32 +25,15 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <ul class="list-group center-list">
-                {{asig.nombre}}
-                {{asig.horas_semanales}}
-                {{asig.num_alumnos}}
-                {{asig.profesor}}
-                {{asig.curso}}
+              {% for a in asig%}
+                {{a.nombre}}
+                {{a.horas_semanales}}
+                {{a.num_alumnos}}
+                {{a.profesor}}
+                {{a.curso}}
+              {% endfor%}
             </ul>
         </div>
-</div>
   </div>
-  <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar_right">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" href="#"> Calendario </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"> Tutor </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"> Comunicados </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  
 </div>
 {%endblock%}

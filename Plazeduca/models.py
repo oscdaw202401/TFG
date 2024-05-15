@@ -37,7 +37,7 @@ class Cursos(models.Model):
     nombre=models.CharField(max_length=50)
     siglas=models.CharField(max_length=20,primary_key=True)
     
-class Asginaturas(models.Model):
+class Asignaturas(models.Model):
     nombre=models.CharField(max_length=50,primary_key=True)
     horas_semanales=models.IntegerField()
     num_alumnos=models.IntegerField()
