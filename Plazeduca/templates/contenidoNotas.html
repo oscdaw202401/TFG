@@ -9,31 +9,31 @@
             <a class="nav-link" href="#"> Encuestas </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> Trabajos </a>
+            <a class="nav-link" href="{% url 'trabajosAl'%}"> Trabajos </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> Asignaturas </a>
+            <a class="nav-link" href="{% url 'asignaturas' %}"> Asignaturas </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> Boletín de notas </a>
+            <a class="nav-link" href="{% url 'notasAl' %}"> Boletín de notas </a>
           </li>
         </ul>
       </div>
     </nav>
   </div>
+</div>
   <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <ul class="list-group center-list">
-              {% for a in asig%}
-                {{a.nombre}}
-                {{a.horas_semanales}}
-                {{a.num_alumnos}}
-                {{a.profesor}}
-                {{a.curso}}
+              {% for n in notasAlumno%}
+                {{n.nota}}
+                {{n.nom_asignatura}}
+                {{n.fecha_subida | date:"d/m/Y"}}
+                <br>
               {% endfor%}
             </ul>
         </div>
-  </div>
+    </div>
 </div>
 {%endblock%}

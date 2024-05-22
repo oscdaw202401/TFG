@@ -31,17 +31,22 @@
 </style>
     <div class="row move" id="contenedor">
       <div class="col-lg-4 col-md-12 mb-4  mb-lg-0">
-        <img
-        src="{% static 'image/examen.png' %}"
-          class="exa shadow-1-strong rounded mb-4"
-          alt="Boat on Calm Water"
-          id="sombra"
-        />
+        <a class="nav-link" href="{% url 'notasAl' %}" ><img
+        
+          src="{% static 'image/examen.png' %}"
+            class="exa shadow-1-strong rounded mb-4"
+            alt="Boat on Calm Water"
+            id="sombra"
+          />
+        </a>
+        <a class="nav-link" href="{% url 'trabajosAl' %}">
         <img
         src="{% static 'image/libros.jpg' %}"
           class="w-100 shadow-1-strong rounded mb-4"
           id="sombra"
         />
+        </a>
+        
       </div>
     
       <div class="col-lg-4 mb-4 mb-lg-0">
@@ -71,8 +76,8 @@
       </div>
     </div>
 
-      
-
+    
+   
 
 <div class="container-fluid">
   <div class="row">
@@ -83,13 +88,13 @@
             <a class="nav-link" href="#"> Encuestas </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> Trabajos </a>
+            <a class="nav-link" href="{% url 'trabajosAl'%}"> Trabajos </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'asignaturas' %}"> Asignaturas </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> Boletín de notas </a>
+            <a class="nav-link" href="{% url 'notasAl'%}"> Boletín de notas </a>
           </li>
         </ul>
       </div>
@@ -136,8 +141,9 @@
           </li>
         </ul>
       </div>
-    </nav>-->
+    </nav>
   </div>
+  -->
   
 </div>
 {%endblock%}

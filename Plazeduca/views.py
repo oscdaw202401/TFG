@@ -19,15 +19,23 @@ def inicio(request):
     return render(request,'login.html',{'form':my_frm})
     
 def base(request):
+    perfil=buscar_alumno_dni(request)
+    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil})
+
+def notasAlumno(request):
     notas=notas_al(request)
+    perfil=buscar_alumno_dni(request)
+    return render(request,'contenidoNotas.html',{"sesion":request.session["logueado"]["dni"],"notasAlumno":notas,"perfil":perfil})
+
+def trabajosAlumno(request):
     trabajos=trabajos_al(request)
     perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"notas":notas,"trabajos":trabajos,"perfil":perfil})
+    return render(request,'contenidoTrabajos.html',{"sesion":request.session["logueado"]["dni"],"trabajosAlumno":trabajos,"perfil":perfil})
 
 def asignaturas(request):
     asig=buscarAsignaturas(request)
     perfil=buscar_alumno_dni(request)
-    return render(request,'asignaturas.html',{"asig":asig,"perfil":perfil})
+    return render(request,'contenidoAsignaturas.html',{"asig":asig,"perfil":perfil})
 
 def cerrarS(request):
     logout(request)
