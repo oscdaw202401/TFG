@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-	/* Coded with love by Mutiullah Samim */
-    body,
-    html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background: #ffffff !important;
-    }
-=======
  body,html{
     margin: 0;
         padding: 0;
@@ -20,17 +10,12 @@
         
  }
 
->>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
     .user_card {
         height: 400px;
         width: 350px;
         margin-top: auto;
         margin-bottom: auto;
-<<<<<<< HEAD
-        background: #6fff3b;
-=======
         background: hsl(104, 46%, 59%);
->>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
         position: relative;
         display: flex;
         justify-content: center;
@@ -52,10 +37,7 @@
         padding: 10px;
         text-align: center;
     }
-<<<<<<< HEAD
-=======
     
->>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
     .brand_logo {
         height: 150px;
         width: 150px;
@@ -90,9 +72,5 @@
     }
     .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
         background-color: #020202 !important;
-<<<<<<< HEAD
-    }
-=======
     } 
     
->>>>>>> 8c5ff9dcfe41fa6ca74e3c7a649005f6399aa57e
