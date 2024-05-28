@@ -7,9 +7,9 @@ class Alumnos(models.Model):
     nombre=models.CharField(max_length=50)
     apellidos=models.CharField(max_length=50)
     telefono=models.CharField(max_length=50)
-    fecha_nac=models.DateTimeField()
+    fecha_nac=models.DateField()
     email=models.EmailField(max_length=50)
-    dirreccion=models.CharField(max_length=50)
+    direccion=models.CharField(max_length=50)
     cursos=models.CharField(max_length=20)
     faltas=models.IntegerField()
     retrasos=models.IntegerField()
@@ -24,7 +24,7 @@ class Profesor(models.Model):
     telefono=models.CharField(max_length=50)
     fecha_nac=models.DateField()
     email=models.EmailField(max_length=50)
-    dirreccion=models.CharField(max_length=50)
+    direccion=models.CharField(max_length=50)
     cursos=models.CharField(max_length=20)
     tutoria=models.CharField(max_length=50)
     
@@ -37,7 +37,7 @@ class Cursos(models.Model):
     nombre=models.CharField(max_length=50)
     siglas=models.CharField(max_length=20,primary_key=True)
     
-class Asginaturas(models.Model):
+class Asignaturas(models.Model):
     nombre=models.CharField(max_length=50,primary_key=True)
     horas_semanales=models.IntegerField()
     num_alumnos=models.IntegerField()

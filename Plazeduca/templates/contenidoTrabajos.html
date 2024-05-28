@@ -1,0 +1,40 @@
+{%extends 'base.html' %}{%block contenido%}
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 sidebar" id="slide">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column" id="centrar">
+          <li class="nav-item" id="enlace">
+            <a class="en" href="#"> Encuestas </a>
+          </li>
+          <li class="nav-item" id="enlace">
+            <a class="en" href="{% url 'trabajosAl'%}"> Trabajos </a>
+          </li>
+          <li class="nav-item" id="enlace">
+            <a class="en" href="{% url 'asignaturas' %}"> Asignaturas </a>
+          </li>
+          <li class="nav-item" id="enlace">
+            <a class="en" href="{% url 'notasAl'%}"> Boletín de notas </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <ul class="list-group center-list">
+              {% for t in trabajosAlumno%}
+                {{t.trabajo}}  
+                {{t.fecha_inicio | date:"d/m/Y"}}  
+                {{t.fecha_entrega | date:"d/m/Y"}}
+                <br>
+              {% endfor%}
+              
+            </ul>
+        </div>
+    </div>
+</div>
+{%endblock%}
