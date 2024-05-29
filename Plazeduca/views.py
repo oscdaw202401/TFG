@@ -100,3 +100,6 @@ def trabajos_al(request):
     else:
         return notas
     
+def encuesta(request):
+    perfil=buscar_alumno_dni(request)
+    return render(request,'contenidoEncuesta.html',{"perfil":perfil})
