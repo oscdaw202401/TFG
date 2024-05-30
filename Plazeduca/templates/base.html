@@ -69,9 +69,9 @@ function ver() {
 .navbar{
   background-color:#80c766;
   position: fixed !important;
-    top: 0;
-    width: 100%;
-    z-index: 1000; /* Ensure the navbar stays above other elements */
+  top: 0;
+  width: 100%;
+  z-index: 1000; 
 
 }
 #ultimo{
@@ -80,9 +80,9 @@ function ver() {
 #perfil{
   float: right;
   margin-top: 20px;
-  width: 250px;
+  width: 255px;
   margin-left: 20px;
-  margin-right: 20px;
+  margin-right: 22px;
   overflow: hidden;
   transition: max-height 1.2s ease-in-out;
 }
@@ -156,7 +156,7 @@ color: black;
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="enlaces" href="#">Incidencias</a>
+          <a class="nav-link" id="enlaces" href="{% url 'incidencias' %}">Incidencias</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="enlaces" href="#">Notificaciones</a>

@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import redirect, render
 from Plazeduca.forms import Login
-from Plazeduca.models import Alumnos, Asignaturas, Notas, Profesor, Trabajos
+from Plazeduca.models import Alumnos, Asignaturas, Asistencias, Notas, Profesor, Trabajos
 
 
 def inicio(request):
@@ -37,6 +37,21 @@ def asignaturas(request):
     perfil=buscar_alumno_dni(request)
     return render(request,'contenidoAsignaturas.html',{"asig":asig,"perfil":perfil})
 
+    
+def encuesta(request):
+    perfil=buscar_alumno_dni(request)
+    return render(request,'contenidoEncuesta.html',{"perfil":perfil})
+
+def incidenciasAlumno(request):
+    perfil=buscar_alumno_dni(request)
+    inci=incidencias_al(request)
+    return render(request,'contenidoIncidencias.html',{"incidencias":inci,"perfil":perfil})
+
+def tutorCurso(request):
+    tutor=buscar_tutor(request)
+    perfil=buscar_alumno_dni(request)
+    return render(request,'contenidoTutor.html',{"tutor":tutor,"perfil":perfil})
+
 def cerrarS(request):
     logout(request)
     return redirect('login')
@@ -52,9 +67,7 @@ def buscarAsignaturas(request):
         return asig
         
 
-def tutor(request):
-    tutor=buscar_tutor(request)
-    return render(request,'tutor.html',{"tutor":tutor})
+
 
 def buscar_alumno(my_frm):
     try:
@@ -92,7 +105,6 @@ def notas_al(request):
         return notas
     
 def trabajos_al(request):
-    
     try:
         notas=Trabajos.objects.get_queryset().filter(dni_alumnos=request.session["logueado"]["dni"])
     except Notas.DoesNotExist:
@@ -100,6 +112,12 @@ def trabajos_al(request):
     else:
         return notas
     
-def encuesta(request):
-    perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoEncuesta.html',{"perfil":perfil})
+def incidencias_al(request):
+     
+    try:
+        inci=Asistencias.objects.get_queryset().filter(dni_alumnos=request.session["logueado"]["dni"])
+    except Notas.DoesNotExist:
+            return None
+    else:
+        return inci
+
