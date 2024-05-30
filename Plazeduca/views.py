@@ -1,7 +1,8 @@
-from django.contrib.auth import authenticate,login,logout
+import datetime
+from django.contrib.auth import logout
 from django.shortcuts import redirect, render
-from Plazeduca.forms import Login
-from Plazeduca.models import Alumnos, Asignaturas, Asistencias, Notas, Profesor, Trabajos
+from Plazeduca.forms import CitaForm, Login
+from Plazeduca.models import Alumnos, Asignaturas, Asistencias, Citas, Notas, Profesor, Trabajos
 
 
 def inicio(request):
@@ -94,7 +95,13 @@ def buscar_tutor(request):
     else:
         return tutor
         
-    
+def buscar_profesor(my_frm):
+    try:
+        prof=Profesor.objects.get(nombre=my_frm.cleaned_data["profesor"])
+    except Profesor.DoesNotExist:
+            return None
+    else:
+        return prof
     
 def notas_al(request):
     try:
@@ -120,4 +127,21 @@ def incidencias_al(request):
             return None
     else:
         return inci
+    
+def anadirCita(request):
+    perfil=buscar_alumno_dni(request)
+    if request.method=='POST':
+        my_frm=CitaForm(request.POST)
+        if my_frm.is_valid():
+            profesor=buscar_profesor(my_frm)
+            if(profesor==None):
+                return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"mensaje":"No existe ningún profesor con ese nombre"})
+            timeNow = datetime.date.today()
+            formatedTimeNow = timeNow.strftime("%Y-%m-%d")
+            cita=Citas(profesor.dni,perfil.dni,formatedTimeNow,my_frm.cleaned_data["motivo"])
+            cita.save()
+            return redirect("base")
+    else:
+        my_frm=CitaForm()
+    return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil})
 
