@@ -11,9 +11,6 @@
 
   <!-- JavaScript de Bootstrap -->
   <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
-
-
-  <script src="{% static 'js/main.js' %}"></script>
   <!-- CSS de Bootstrap -->
   <link href="{% static 'bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet" />
   <link href="{% static 'bootstrap4/css/contenidoAlumno.css' %}" rel="stylesheet" />
@@ -22,19 +19,24 @@
   
 </head>
 <script type="text/JavaScript">
-  function ver() {
-    var x = document.getElementById("perfil");
-    x.classList.toggle("mostrar");
-    if (x.classList.contains("mostrar")) {
-        x.classList.remove("esconder");
-    } else {
-        x.classList.add("esconder");
-    }
-}
 
+function ver() {
+    var x = document.getElementById("perfil");
+    if (x.classList.contains("esconder")) {
+      x.classList.remove("esconder");
+      x.classList.add("mostrar");
+    } else {
+      x.classList.remove("mostrar");
+      x.classList.add("esconder");
+    }
+
+}
 </script>
 
 <style>
+  body {
+    padding-top: 80px;
+}
   .contenido {
     width: 40%;
     margin-left: auto;
@@ -66,6 +68,11 @@
 }
 .navbar{
   background-color:#80c766;
+  position: fixed !important;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure the navbar stays above other elements */
+
 }
 #ultimo{
   margin-left:250px;
@@ -76,17 +83,19 @@
   width: 250px;
   margin-left: 20px;
   margin-right: 20px;
-
+  overflow: hidden;
+  transition: max-height 1.2s ease-in-out;
 }
 
 #curso{
   text-align: center;
 }
 .mostrar {
-  animation: mostrarAnimacion 0.75s forwards;
+  max-height: 400px;
+  
 }
 .esconder {
-  animation: esconderAnimacion 0.75s forwards;
+  max-height: 0;
 }
 .card{
   margin-top: 10px;
@@ -170,19 +179,19 @@ color: black;
       </div>
     </div>
   </nav>
-  <div class="col-lg-2 col-md-12 mb-4 mb-lg-0" id="perfil">
-    <div class="card" style="width: 14rem; " id="info">
+  <div class="col-lg-2 col-md-12 mb-4 mb-lg-0 esconder" id="perfil" >
+    <div class="card" style="width: 15rem; " id="info">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">Curso: {{perfil.cursos}}</li>
-        <li class="list-group-item">{{perfil.dni}}</li>
+        <li class="list-group-item"><b>Curso:</b> {{perfil.cursos}}</li>
+        <li class="list-group-item"><b>DNI:</b> {{perfil.dni}}</li>
         <li class="list-group-item">{{perfil.nombre}} {{perfil.apellidos}}</li>
-        <li class="list-group-item">{{perfil.telefono}}</li>
+        <li class="list-group-item"><b>Telefono:</b> {{perfil.telefono}}</li>
         <li class="list-group-item">{{perfil.email}}</li>
-        <li class="list-group-item">{{perfil.direccion}}</li>
-        <li class="list-group-item">{{perfil.fecha_nac | date:"d/m/Y"}}</li>
+        <li class="list-group-item"><b>Dirección: </b>{{perfil.direccion}}</li>
+        <li class="list-group-item"><b>Fecha de Nacimiento </b>{{perfil.fecha_nac | date:"d/m/Y"}}</li>
       </ul>
     </div>
-    <h2></h2>
+    
   </div>
   <div class="contenido">{%block contenido %}{%endblock%}</div>
   

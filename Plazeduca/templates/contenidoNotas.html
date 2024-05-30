@@ -40,8 +40,8 @@
     <tbody id="fila">
       {% for n in notasAlumno%}
       <tr>
-        <td>{{n.nota}}</td>
         <td>{{n.nom_asignatura}}</td>
+        <td>{{n.nota}}</td>
         <td>{{n.fecha_subida | date:"d/m/Y"}}</td>
       </tr>
       {% endfor%}

@@ -45,7 +45,7 @@ def cerrarS(request):
 def buscarAsignaturas(request):
     alum=buscar_alumno_dni(request)
     try:
-        asig=Asignaturas.objects.all()
+        asig=Asignaturas.objects.get_queryset().filter(curso=alum.cursos)
     except Asignaturas.DoesNotExist:
         return None
     else:
