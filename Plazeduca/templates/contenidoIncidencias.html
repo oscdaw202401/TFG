@@ -33,20 +33,16 @@
     <thead id="fila">
       <tr>
         <th scope="col">Asignatura</th>
-        <th scope="col">Profesor</th>
-        <th scope="col">Horas Semanales</th>
-        <th scope="col">Alumnos</th>
-        <th scope="col">Curso</th>
+        <th scope="col">Faltas</th>
+        <th scope="col">Retrasos</th>
       </tr>
     </thead>
     <tbody id="fila">
-      {% for a in asig%}
+      {% for inci in incidencias%}
       <tr>
-                <td>{{a.nombre}}</td>
-                <td>{{a.profesor}}</td>
-                <td>{{a.curso}}</td>
-                <td>{{a.horas_semanales}}</td>
-                <td>{{a.num_alumnos}}</td>
+            <td>{{inci.nom_asignatura}}</td>
+            <td>{{inci.num_faltas}}</td>
+            <td>{{inci.num_retrasos}}</td>
       </tr>
       {% endfor%}
     </tbody>

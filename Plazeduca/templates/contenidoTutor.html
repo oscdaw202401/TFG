@@ -32,23 +32,19 @@
   <table class="table table-striped table-hover m-5">
     <thead id="fila">
       <tr>
-        <th scope="col">Asignatura</th>
-        <th scope="col">Profesor</th>
-        <th scope="col">Horas Semanales</th>
-        <th scope="col">Alumnos</th>
-        <th scope="col">Curso</th>
+        <th scope="col">Nombre y Apellidos</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Email</th>
+        <th scope="col">Cursos</th>
       </tr>
     </thead>
     <tbody id="fila">
-      {% for a in asig%}
       <tr>
-                <td>{{a.nombre}}</td>
-                <td>{{a.profesor}}</td>
-                <td>{{a.curso}}</td>
-                <td>{{a.horas_semanales}}</td>
-                <td>{{a.num_alumnos}}</td>
+            <td>{{tutor.nombre}} {{tutor.apellidos}}</td>
+            <td>{{tutor.telefono}}</td>
+            <td>{{tutor.email}}</td>
+            <td>{{tutor.cursos}}</td>
       </tr>
-      {% endfor%}
     </tbody>
   </table>
 </div>
