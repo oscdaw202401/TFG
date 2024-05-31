@@ -120,14 +120,13 @@ def trabajos_al(request):
         return notas
     
 def incidencias_al(request):
-     
     try:
         inci=Asistencias.objects.get_queryset().filter(dni_alumnos=request.session["logueado"]["dni"])
     except Notas.DoesNotExist:
             return None
     else:
         return inci
-    
+
 def anadirCita(request):
     perfil=buscar_alumno_dni(request)
     if request.method=='POST':
@@ -136,9 +135,10 @@ def anadirCita(request):
             profesor=buscar_profesor(my_frm)
             if(profesor==None):
                 return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"mensaje":"No existe ningún profesor con ese nombre"})
-            timeNow = datetime.date.today()
-            formatedTimeNow = timeNow.strftime("%Y-%m-%d")
-            cita=Citas(profesor.dni,perfil.dni,formatedTimeNow,my_frm.cleaned_data["motivo"])
+            timeNow = datetime.datetime.now()
+            lastId=Citas.objects.latest("id").id+1
+            formatedTimeNow = timeNow.strftime("%Y-%m-%d %H:%M:%S")
+            cita=Citas(lastId,profesor.dni,perfil.dni,formatedTimeNow,my_frm.cleaned_data["motivo"])
             cita.save()
             return redirect("base")
     else:

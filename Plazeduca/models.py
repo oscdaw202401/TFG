@@ -64,9 +64,10 @@ class Trabajos(models.Model):
     nom_asignatura=models.CharField(max_length=50)
     
 class Citas(models.Model):
+    id=models.AutoField(primary_key=True)
     dni_profesor=models.CharField(max_length=50)
-    dni_alumnos=models.CharField(max_length=20,primary_key=True)
-    fecha_envio=models.DateField()
+    dni_alumnos=models.CharField(max_length=20)
+    fecha_envio=models.DateTimeField()
     motivo=models.TextField(max_length=100)
     
 
