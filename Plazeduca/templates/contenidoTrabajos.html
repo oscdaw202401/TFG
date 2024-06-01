@@ -11,18 +11,33 @@
     <nav class="col-md-2 sidebar" id="slide">
       <div class="sidebar-sticky">
         <ul class="nav flex-column" id="centrar">
-          <li class="nav-item" id="enlace">
-            <a class="en" href="{% url 'encuesta'%}"> Encuesta de satisfaccion </a>
-          </li>
-          <li class="nav-item" id="enlace">
-            <a class="en" href="{% url 'trabajosAl'%}"> Trabajos </a>
-          </li>
-          <li class="nav-item" id="enlace">
-            <a class="en" href="{% url 'asignaturas' %}"> Asignaturas </a>
-          </li>
-          <li class="nav-item" id="enlace">
-            <a class="en" href="{% url 'notasAl'%}"> Boletín de notas </a>
-          </li>
+          {% if rol == 'alumno' %}
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'trabajosAl' %}"> Trabajos </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'asignaturas' %}"> Asignaturas </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'notasAl' %}"> Boletín de notas </a>
+            </li>
+          {% elif rol == 'profesor' %}
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'trabajosProf' %}"> Trabajos </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'asignaturasProf' %}"> Asignaturas </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'notasProf' %}"> Boletín de notas </a>
+            </li>
+            {% endif %}
         </ul>
       </div>
     </nav>
@@ -38,8 +53,12 @@
       </tr>
     </thead>
     <tbody id="fila">
-      {% for t in trabajosAlumno%}
+      {% if trabajos|length == 0%}
+          <h4>No hay ningun trabajo</h4>
+        {% endif %}
+      {% for t in trabajos%}
       <tr>
+        
         <td>{{t.trabajo}}</td>
         <td>{{t.fecha_inicio | date:"d/m/Y"}}</td>
         <td>{{t.fecha_entrega | date:"d/m/Y"}}</td>
