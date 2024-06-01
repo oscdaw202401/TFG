@@ -203,6 +203,10 @@ def cerrarS(request):
 
 def anadirCita(request):
     perfil=buscar_alumno_dni(request)
+    rol="alumno"
+    if(perfil==None):
+        perfil=buscar_profesor_dni(request)
+        rol="profesor"
     if request.method=='POST':
         my_frm=CitaForm(request.POST)
         if my_frm.is_valid():
@@ -217,5 +221,5 @@ def anadirCita(request):
             return redirect("base")
     else:
         my_frm=CitaForm()
-    return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil})
+    return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
