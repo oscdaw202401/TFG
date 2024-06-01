@@ -47,15 +47,19 @@
   <table class="table table-striped table-hover m-5">
     <thead id="fila">
       <tr>
+        <th scope="col">Examen</th>
         <th scope="col">Asignatura</th>
+        <th scope="col">Alumno</th>
         <th scope="col">Nota</th>
-        <th scope="col">Fecha subida</th>
+        <th scope="col">Fecha</th>
       </tr>
     </thead>
     <tbody id="fila">
-      {% for n in notasAlumno%}
+      {% for n in notas %}
       <tr>
+        <td>{{n.examen}}</td>
         <td>{{n.nom_asignatura}}</td>
+        <td>{{n.dni_alumno}}</td>
         <td>{{n.nota}}</td>
         <td>{{n.fecha_subida | date:"d/m/Y"}}</td>
       </tr>

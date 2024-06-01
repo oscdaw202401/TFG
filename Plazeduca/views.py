@@ -27,15 +27,15 @@ def base(request):
     perfil=buscar_alumno_dni(request)
     if(perfil==None):
         perfil=buscar_profesor_dni(request)
-        return render(request,'contenidoProfesor.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil})
-    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil})
+        return render(request,'contenidoProfesor.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil,"rol":"profesor"})
+    return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil,"rol":"alumno"})
 
 #Alumnos
 
 def notasAlumno(request):
     notas=notas_al(request)
     perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoNotas.html',{"sesion":request.session["logueado"]["dni"],"notasAlumno":notas,"perfil":perfil,"rol":"alumno"})
+    return render(request,'contenidoNotas.html',{"sesion":request.session["logueado"]["dni"],"notas":notas,"perfil":perfil,"rol":"alumno"})
 
 def trabajosAlumno(request):
     trabajos=trabajos_al(request)
@@ -83,10 +83,13 @@ def asignaturasProfesor(request):
 
 def notasProfesor(request):
     prof=buscar_profesor_dni(request)
-    asig=buscar_asignatura_profesor(request)
-    return render(request,'contenidoAsignaturas.html',{"asig":asig,"perfil":prof,"rol":"profesor"})
+    notas=buscar_nota_asignatura_alumno(request)
+    return render(request,'contenidoNotas.html',{"notas":notas,"perfil":prof,"rol":"profesor"})
 
-
+def tutoriaClase(request):
+    prof=buscar_profesor_dni(request)
+    alum=buscar_alumnos_tutoria(request)
+    return render(request,'contenidoTutor.html',{"alum":alum,"perfil":prof,"rol":"profesor"})
 
 
 #Busquedas
@@ -196,6 +199,39 @@ def buscar_asignatura_profesor(request):
             return None
     else:
         return asig
+    
+
+def buscar_nota_asignatura_alumno(request):
+    try:
+        asig=buscar_asignatura_profesor(request)
+        listaNotas=[]
+        for a in asig:
+            nota=Notas.objects.get_queryset().filter(nom_asignatura=a.nombre)
+            listaNotas.extend(nota)
+    except Notas.DoesNotExist or listaNotas.count==0:
+            return None
+    else:
+        return listaNotas
+    
+# def buscar_alumnos_por_nota(notas):
+#     try:
+#         listaAlumnos=[]
+#         for n in notas:
+#             alum=Alumnos.objects.get_queryset().filter(dni=n.dni_alumno)
+#             listaAlumnos.extend(alum)
+#     except Alumnos.DoesNotExist or listaAlumnos.count==0:
+#             return None
+#     else:
+#         return listaAlumnos
+    
+def buscar_alumnos_tutoria(request):
+    try:
+        prof=buscar_profesor_dni(request)
+        alum=Alumnos.objects.get_queryset().filter(cursos=prof.tutoria)
+    except Alumnos.DoesNotExist:
+            return None
+    else:
+        return alum
 
 def cerrarS(request):
     logout(request)
