@@ -46,9 +46,10 @@ class Asignaturas(models.Model):
     
 class Notas(models.Model):
     nota=models.IntegerField()
-    dni_alumno=models.CharField(max_length=9,primary_key=True)
+    dni_alumno=models.CharField(max_length=9)
     nom_asignatura=models.CharField(max_length=50)
     fecha_subida=models.DateTimeField(auto_now_add=True)
+    examen=models.CharField(max_length=50,primary_key=True)
     
 class Asistencias(models.Model):
     dni_alumnos=models.CharField(max_length=9,primary_key=True)

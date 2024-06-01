@@ -155,9 +155,15 @@ color: black;
           <a class="nav-link" id="primero" href="{% url 'base' %}">Inicio <span class="sr-only">(current)</span>
           </a>
         </li>
+        {% if rol == 'alumno' %}
         <li class="nav-item">
           <a class="nav-link" id="enlaces" href="{% url 'incidencias' %}">Incidencias</a>
         </li>
+        {%elif rol == 'profesor' %}
+        <li class="nav-item">
+          <a class="nav-link" id="enlaces" href="#">Poner otra cosa</a>
+        </li>
+        {%endif%}
         <li class="nav-item">
           <a class="nav-link" id="enlaces" href="#">Notificaciones</a>
         </li>

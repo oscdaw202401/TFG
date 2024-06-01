@@ -44,22 +44,45 @@
   </div>
 </div>
 <div class="container">
+
   <table class="table table-striped table-hover m-5">
     <thead id="fila">
+      {% if rol == 'alumno' %}
       <tr>
         <th scope="col">Nombre y Apellidos</th>
         <th scope="col">Telefono</th>
         <th scope="col">Email</th>
         <th scope="col">Cursos</th>
       </tr>
+      {% elif rol == 'profesor' %}
+      <tr>
+        <th scope="col">Nombre y Apellidos</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Email</th>
+        <th scope="col">Faltas</th>
+        <th scope="col">Retrasos</th>
+      </tr>
+      {% endif %}
     </thead>
     <tbody id="fila">
+      {% if rol == 'alumno' %}
       <tr>
             <td>{{tutor.nombre}} {{tutor.apellidos}}</td>
             <td>{{tutor.telefono}}</td>
             <td>{{tutor.email}}</td>
             <td>{{tutor.cursos}}</td>
       </tr>
+      {% elif rol == 'profesor' %}
+      {% for a in alum %}
+      <tr>
+        <td>{{a.nombre}} {{a.apellidos}}</td>
+        <td>{{a.telefono}}</td>
+        <td>{{a.email}}</td>
+        <td>{{a.faltas}}</td>
+        <td>{{a.retrasos}}</td>
+      </tr>
+      {% endfor %}
+      {% endif %}
     </tbody>
   </table>
 </div>

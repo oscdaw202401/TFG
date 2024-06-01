@@ -48,7 +48,6 @@
     <thead id="fila">
       <tr>
         <th scope="col">Asignatura</th>
-        <th scope="col">Profesor</th>
         <th scope="col">Horas Semanales</th>
         <th scope="col">Alumnos</th>
         <th scope="col">Curso</th>
@@ -58,10 +57,10 @@
       {% for a in asig%}
       <tr>
                 <td>{{a.nombre}}</td>
-                <td>{{a.profesor}}</td>
-                <td>{{a.curso}}</td>
+                
                 <td>{{a.horas_semanales}}</td>
                 <td>{{a.num_alumnos}}</td>
+                <td>{{a.curso}}</td>
       </tr>
       {% endfor%}
     </tbody>
