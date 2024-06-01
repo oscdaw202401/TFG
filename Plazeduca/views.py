@@ -10,8 +10,12 @@ def inicio(request):
         my_frm=Login(request.POST)
         if my_frm.is_valid():
             alum=buscar_alumno(my_frm)
+            prof=buscar_profesor(my_frm)
             if(alum!=None):
                 request.session['logueado']={"dni":alum.dni}
+                return redirect('base')
+            elif(prof!=None):
+                request.session['logueado']={"dni":prof.dni}
                 return redirect('base')
             else:
                 return render(request,'login.html',{'form':my_frm,'mensaje':"Nombre de usuario o contraseña incorrecto"})
@@ -21,54 +25,71 @@ def inicio(request):
     
 def base(request):
     perfil=buscar_alumno_dni(request)
+    if(perfil==None):
+        perfil=buscar_profesor_dni(request)
+        return render(request,'contenidoProfesor.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil})
     return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil})
+
+#Alumnos
 
 def notasAlumno(request):
     notas=notas_al(request)
     perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoNotas.html',{"sesion":request.session["logueado"]["dni"],"notasAlumno":notas,"perfil":perfil})
+    return render(request,'contenidoNotas.html',{"sesion":request.session["logueado"]["dni"],"notasAlumno":notas,"perfil":perfil,"rol":"alumno"})
 
 def trabajosAlumno(request):
     trabajos=trabajos_al(request)
     perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoTrabajos.html',{"sesion":request.session["logueado"]["dni"],"trabajosAlumno":trabajos,"perfil":perfil})
+    return render(request,'contenidoTrabajos.html',{"sesion":request.session["logueado"]["dni"],"trabajos":trabajos,"perfil":perfil,"rol":"alumno"})
 
 def asignaturas(request):
-    asig=buscarAsignaturas(request)
+    asig=buscar_asignaturas_alumno(request)
     perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoAsignaturas.html',{"asig":asig,"perfil":perfil})
+    return render(request,'contenidoAsignaturas.html',{"asig":asig,"perfil":perfil,"rol":"alumno"})
 
-    
 def encuesta(request):
     perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoEncuesta.html',{"perfil":perfil})
+    rol="alumno"
+    if(perfil==None):
+        perfil=buscar_profesor_dni(request)
+        rol="profesor"
+    return render(request,'contenidoEncuesta.html',{"perfil":perfil,"rol":rol})
 
 def incidenciasAlumno(request):
     perfil=buscar_alumno_dni(request)
     inci=incidencias_al(request)
-    return render(request,'contenidoIncidencias.html',{"incidencias":inci,"perfil":perfil})
+    return render(request,'contenidoIncidencias.html',{"incidencias":inci,"perfil":perfil,"rol":"alumno"})
 
 def tutorCurso(request):
     tutor=buscar_tutor(request)
     perfil=buscar_alumno_dni(request)
-    return render(request,'contenidoTutor.html',{"tutor":tutor,"perfil":perfil})
-
-def cerrarS(request):
-    logout(request)
-    return redirect('login')
+    return render(request,'contenidoTutor.html',{"tutor":tutor,"perfil":perfil,"rol":"alumno"})
 
 
-def buscarAsignaturas(request):
-    alum=buscar_alumno_dni(request)
-    try:
-        asig=Asignaturas.objects.get_queryset().filter(curso=alum.cursos)
-    except Asignaturas.DoesNotExist:
-        return None
-    else:
-        return asig
+
         
 
+#Profesor
 
+def trabajosProfesor(request):
+    prof=buscar_profesor_dni(request)
+    trab=buscar_trabajos_asignatura_profesor(request)
+    return render(request,'contenidoTrabajos.html',{"trabajos":trab,"perfil":prof,"rol":"profesor"})
+
+def asignaturasProfesor(request):
+    prof=buscar_profesor_dni(request)
+    asig=buscar_asignatura_profesor(request)
+    return render(request,'contenidoAsignaturas.html',{"asig":asig,"perfil":prof,"rol":"profesor"})
+
+def notasProfesor(request):
+    prof=buscar_profesor_dni(request)
+    asig=buscar_asignatura_profesor(request)
+    return render(request,'contenidoAsignaturas.html',{"asig":asig,"perfil":prof,"rol":"profesor"})
+
+
+
+
+#Busquedas
 
 def buscar_alumno(my_frm):
     try:
@@ -78,6 +99,15 @@ def buscar_alumno(my_frm):
     else:
         return alum
     
+
+def buscar_profesor(my_frm):
+    try:
+        prof=Profesor.objects.get(usuario=my_frm.cleaned_data["usuario"],password=my_frm.cleaned_data["contrasena"])
+    except Profesor.DoesNotExist:
+            return None
+    else:
+        return prof
+    
 def buscar_alumno_dni(request):
     try:
         alum=Alumnos.objects.get(dni=request.session["logueado"]["dni"])
@@ -85,6 +115,22 @@ def buscar_alumno_dni(request):
             return None
     else:
         return alum
+    
+def buscar_profesor_nombre(my_frm):
+    try:
+        prof=Profesor.objects.get(nombre=my_frm.cleaned_data["profesor"])
+    except Profesor.DoesNotExist:
+            return None
+    else:
+        return prof
+    
+def buscar_profesor_dni(request):
+    try:
+        prof=Profesor.objects.get(dni=request.session["logueado"]["dni"])
+    except Profesor.DoesNotExist:
+            return None
+    else:
+        return prof
 
 def buscar_tutor(request):
     try:
@@ -95,13 +141,14 @@ def buscar_tutor(request):
     else:
         return tutor
         
-def buscar_profesor(my_frm):
+def buscar_asignaturas_alumno(request):
+    alum=buscar_alumno_dni(request)
     try:
-        prof=Profesor.objects.get(nombre=my_frm.cleaned_data["profesor"])
-    except Profesor.DoesNotExist:
-            return None
+        asig=Asignaturas.objects.get_queryset().filter(curso=alum.cursos)
+    except Asignaturas.DoesNotExist:
+        return None
     else:
-        return prof
+        return asig
     
 def notas_al(request):
     try:
@@ -126,13 +173,40 @@ def incidencias_al(request):
             return None
     else:
         return inci
+    
+
+def buscar_trabajos_asignatura_profesor(request):
+    try:
+        asig=buscar_asignatura_profesor(request)
+        listaTrabajos=[]
+        for a in asig:
+            trab=Trabajos.objects.get_queryset().filter(nom_asignatura=a.nombre)
+            listaTrabajos.extend(trab)
+    except Trabajos.DoesNotExist or listaTrabajos.count==0:
+            return None
+    else:
+        return listaTrabajos
+
+
+def buscar_asignatura_profesor(request):
+    try:
+        prof=buscar_profesor_dni(request)
+        asig=Asignaturas.objects.get_queryset().filter(profesor=prof.nombre)
+    except Asignaturas.DoesNotExist:
+            return None
+    else:
+        return asig
+
+def cerrarS(request):
+    logout(request)
+    return redirect('login')
 
 def anadirCita(request):
     perfil=buscar_alumno_dni(request)
     if request.method=='POST':
         my_frm=CitaForm(request.POST)
         if my_frm.is_valid():
-            profesor=buscar_profesor(my_frm)
+            profesor=buscar_profesor_nombre(my_frm)
             if(profesor==None):
                 return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"mensaje":"No existe ningún profesor con ese nombre"})
             timeNow = datetime.datetime.now()
