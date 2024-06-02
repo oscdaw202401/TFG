@@ -1,7 +1,7 @@
 import datetime
 from django.contrib.auth import logout
 from django.shortcuts import redirect, render
-from Plazeduca.forms import CitaForm, Login
+from Plazeduca.forms import CitaForm, Login, TrabajoForm
 from Plazeduca.models import Alumnos, Asignaturas, Asistencias, Citas, Notas, Profesor, Trabajos
 
 
@@ -91,7 +91,8 @@ def tutoriaClase(request):
     alum=buscar_alumnos_tutoria(request)
     return render(request,'contenidoTutor.html',{"alum":alum,"perfil":prof,"rol":"profesor"})
 
-
+def anadirTrabajo(request):
+    prof=buscar_profesor_dni(request)
 #Busquedas
 
 def buscar_alumno(my_frm):
@@ -119,13 +120,23 @@ def buscar_alumno_dni(request):
     else:
         return alum
     
-def buscar_profesor_nombre(my_frm):
+def buscar_profesor_nombre_apellidos(my_frm):
+    nombreYapellidos=my_frm.cleaned_data["profesor"].split()
     try:
-        prof=Profesor.objects.get(nombre=my_frm.cleaned_data["profesor"])
+        prof=Profesor.objects.get(nombre=nombreYapellidos[0],apellidos=" ".join(nombreYapellidos[1:]))
     except Profesor.DoesNotExist:
             return None
     else:
         return prof
+    
+def buscar_alumno_nombre_apellidos(my_frm):
+    nombreYapellidos=my_frm.cleaned_data["profesor"].split()
+    try:
+        alum=Alumnos.objects.get(nombre=nombreYapellidos[0],apellidos=" ".join(nombreYapellidos[1:]))
+    except Alumnos.DoesNotExist:
+            return None
+    else:
+        return alum
     
 def buscar_profesor_dni(request):
     try:
@@ -237,7 +248,7 @@ def cerrarS(request):
     logout(request)
     return redirect('login')
 
-def anadirCita(request):
+def anadir_cita(request):
     perfil=buscar_alumno_dni(request)
     rol="alumno"
     if(perfil==None):
@@ -246,16 +257,34 @@ def anadirCita(request):
     if request.method=='POST':
         my_frm=CitaForm(request.POST)
         if my_frm.is_valid():
-            profesor=buscar_profesor_nombre(my_frm)
-            if(profesor==None):
-                return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"mensaje":"No existe ningún profesor con ese nombre"})
+            if(rol=="profesor"):
+                reunion=buscar_alumno_nombre_apellidos(my_frm)
+            reunion=buscar_profesor_nombre_apellidos(my_frm)
+            if(reunion==None):
+                return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"mensaje":"No existe nadie con ese nombre","rol":rol})
             timeNow = datetime.datetime.now()
             lastId=Citas.objects.latest("id").id+1
             formatedTimeNow = timeNow.strftime("%Y-%m-%d %H:%M:%S")
-            cita=Citas(lastId,profesor.dni,perfil.dni,formatedTimeNow,my_frm.cleaned_data["motivo"])
+            cita=Citas(lastId,reunion.dni,perfil.dni,formatedTimeNow,my_frm.cleaned_data["motivo"])
             cita.save()
             return redirect("base")
     else:
         my_frm=CitaForm()
     return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"rol":rol})
+
+def anadir_trabajo_profesor(request):
+    perfil=buscar_profesor_dni(request)
+    rol="profesor"
+    if request.method=='POST':
+        my_frm=TrabajoForm(request.POST)
+        if my_frm.is_valid():
+            alumno=buscar_alumno_nombre_apellidos(my_frm)
+            if(alumno==None):
+                return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
+            trab=Trabajos(my_frm.cleaned_data["trabajo"],my_frm.clean_fecha(),my_frm.clean_fecha_final(),alumno.dni,my_frm.cleaned_data["nom_asignatura"])
+            trab.save()
+            return redirect("base")
+    else:
+        my_frm=TrabajoForm()
+    return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 

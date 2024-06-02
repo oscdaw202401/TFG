@@ -5,5 +5,33 @@ class Login(forms.Form):
     contrasena=forms.CharField(max_length=50,required=True,widget=forms.PasswordInput(attrs= {'class':'form-control','placeholder':"Tu contraseña"}),label="Contraseña")
 
 class CitaForm(forms.Form):
-    profesor=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre del profesor"}))
+    profesor=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre con quien quieres la reunión"}))
     motivo=forms.CharField(max_length=200,required=True,widget=forms.Textarea(attrs= {'class':'form-control','placeholder':"Motivo de la reunion"}),label="Nombre")
+
+class TrabajoForm(forms.Form):
+    trabajo=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre del trabajo"}))
+    fecha_inicial = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de inicio','type': 'date'}))
+    fecha_final = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de inicio','type': 'date'}))
+    nombre_alumno = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del Alumno'}))
+    nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
+
+
+    def clean_fecha(self):
+        fecha_inicial = self.cleaned_data["fecha_inicial"]
+        fecha_final =self.cleaned_data["fecha_final"]
+
+        if fecha_inicial and fecha_final:
+            if fecha_inicial > fecha_final:
+                raise forms.ValidationError("La fecha inicial no puede ser posterior a la fecha final")
+        return fecha_inicial
+    
+    def clean_fecha_final(self):
+        fecha_inicial = self.cleaned_data["fecha_inicial"]
+        fecha_final =self.cleaned_data["fecha_final"]
+
+        if fecha_inicial and fecha_final:
+            if fecha_final < fecha_inicial:
+                raise forms.ValidationError("La fecha final no puede ser anterior a la fecha inicial")
+        return fecha_final
+
+    
