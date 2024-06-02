@@ -61,8 +61,9 @@ class Trabajos(models.Model):
     trabajo=models.CharField(max_length=50)
     fecha_inicio=models.DateField()
     fecha_entrega=models.DateField()
-    dni_alumnos=models.CharField(max_length=9,primary_key=True)
+    dni_alumnos=models.CharField(max_length=9)
     nom_asignatura=models.CharField(max_length=50)
+    id=models.IntegerField(primary_key=True)
     
 class Citas(models.Model):
     id=models.AutoField(primary_key=True)
