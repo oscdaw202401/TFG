@@ -4,6 +4,18 @@
     border-top: 2px#80c766 outset;
     border-bottom: #80c766 2px outset;
   }
+  #carta{
+    border-color: #80c766;
+    border-width: 3px;
+  }
+  #link{
+    color:black;
+    text-decoration:none;
+    font-weight: bold;
+  }
+  #lBorde{
+    border-color:black;
+  }
 
 </style>
 <div class="container-fluid">
@@ -44,47 +56,28 @@
   </div>
 </div>
 <div class="container">
-
-  <table class="table table-striped table-hover m-5">
-    <thead id="fila">
+  <div class="card" style="width: 18rem;" id="carta">
+    <ul class="list-group list-group-flush">
       {% if rol == 'alumno' %}
-      <tr>
-        <th scope="col">Nombre y Apellidos</th>
-        <th scope="col">Telefono</th>
-        <th scope="col">Email</th>
-        <th scope="col">Cursos</th>
-      </tr>
-      {% elif rol == 'profesor' %}
-      <tr>
-        <th scope="col">Nombre y Apellidos</th>
-        <th scope="col">Telefono</th>
-        <th scope="col">Email</th>
-        <th scope="col">Faltas</th>
-        <th scope="col">Retrasos</th>
-      </tr>
-      {% endif %}
-    </thead>
-    <tbody id="fila">
-      {% if rol == 'alumno' %}
-      <tr>
-            <td>{{tutor.nombre}} {{tutor.apellidos}}</td>
-            <td>{{tutor.telefono}}</td>
-            <td>{{tutor.email}}</td>
-            <td>{{tutor.cursos}}</td>
-      </tr>
+      <li class="list-group-item" id="lBorde"><b>Nombre: </b>{{tutor.nombre}} {{tutor.apellidos}}</li>
+      <li class="list-group-item" id="lBorde"><b>Telefono: </b>{{tutor.telefono}}</li>
+      <li class="list-group-item" id="lBorde"><b>Email: </b>{{tutor.email}}</li>
+      <li class="list-group-item" id="lBorde"><b>Cursos: </b>{{tutor.cursos}}</li>
       {% elif rol == 'profesor' %}
       {% for a in alum %}
-      <tr>
-        <td>{{a.nombre}} {{a.apellidos}}</td>
-        <td>{{a.telefono}}</td>
-        <td>{{a.email}}</td>
-        <td>{{a.faltas}}</td>
-        <td>{{a.retrasos}}</td>
-      </tr>
+      <li class="list-group-item"><b>Nombre: </b>{{a.nombre}} {{a.apellidos}}</li>
+      <li class="list-group-item"><b>Telefono: </b>{{a.telefono}}</li>
+      <li class="list-group-item"><b>Email: </b>{{a.email}}</li>
+      <li class="list-group-item"><b>Faltas: </b>{{a.faltas}}</li>
+      <li class="list-group-item"><b>Retrasos: </b>{{a.retrasos}}</li>
       {% endfor %}
       {% endif %}
-    </tbody>
-  </table>
+    </ul>
+    <div class="card-body">
+      <a href="{% url 'cita' %}" class="card-link" id="link">Pedir reunion</a>
+    </div>
+  </div>
+  
 </div>
 </div>
 {%endblock%}

@@ -14,10 +14,13 @@
     margin-top: 20px;
     margin-right: 240px;
    }
-   .encues:hover{
-    background-color: yellow;
+   input:hover{
+    border:outset black 2px;
    }
-</style>
+   textarea:hover{
+    border:outset black 2px;
+   }
+</style>  
 <div class="container-fluid">
     <div class="row">
       <nav class="col-md-2 sidebar" id="slide">
@@ -60,9 +63,15 @@
         <div class="col-md-12" id="bloque">
             <div class="well well-sm">
               {% if rol == 'alumno' %}
-                <h3>Introduzca el profesor con el que desea hablar y el motivo</h3>
+              <div class="alert alert-success" role="alert" style="width: 29rem; margin-left: 22px; margin-top:55px;">
+                Introduzca el profesor con el que desea hablar y el motivo
+              </div>
+                <h3></h3>
               {% else %}
-                <h3>Introduzca el alumno con el que desea hablar y el motivo</h3>
+              <div class="alert alert-success" role="alert" style="width: 29rem; margin-left: 22px; margin-top:55px;">
+                Introduzca el alumno con el que desea hablar y el motivo
+              </div>
+           
               {% endif %}
                 <form class="form-horizontal" method="POST" id="formulario">
                   {% csrf_token %}
