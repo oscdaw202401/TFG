@@ -34,4 +34,6 @@ class TrabajoForm(forms.Form):
                 raise forms.ValidationError("La fecha final no puede ser anterior a la fecha inicial")
         return fecha_final
 
+class BuscarIncidenciasForm(forms.Form):
+    nombre_alumno=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Busca las incidencias de alumno introducido"}))
     
