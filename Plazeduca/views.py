@@ -1,7 +1,7 @@
 import datetime
 from django.contrib.auth import logout
 from django.shortcuts import redirect, render
-from Plazeduca.forms import CitaForm, Login, TrabajoForm
+from Plazeduca.forms import BuscarIncidenciasForm, CitaForm, Login, TrabajoForm
 from Plazeduca.models import Alumnos, Asignaturas, Asistencias, Citas, Notas, Profesor, Trabajos
 
 
@@ -33,12 +33,12 @@ def base(request):
 #Alumnos
 
 def notasAlumno(request):
-    notas=notas_al(request)
+    notas=buscar_notas_al(request)
     perfil=buscar_alumno_dni(request)
     return render(request,'contenidoNotas.html',{"sesion":request.session["logueado"]["dni"],"notas":notas,"perfil":perfil,"rol":"alumno"})
 
 def trabajosAlumno(request):
-    trabajos=trabajos_al(request)
+    trabajos=buscar_trabajos_al(request)
     perfil=buscar_alumno_dni(request)
     return render(request,'contenidoTrabajos.html',{"sesion":request.session["logueado"]["dni"],"trabajos":trabajos,"perfil":perfil,"rol":"alumno"})
 
@@ -57,7 +57,7 @@ def encuesta(request):
 
 def incidenciasAlumno(request):
     perfil=buscar_alumno_dni(request)
-    inci=incidencias_al(request)
+    inci=buscar_incidencias_al(request)
     return render(request,'contenidoIncidencias.html',{"incidencias":inci,"perfil":perfil,"rol":"alumno"})
 
 def tutorCurso(request):
@@ -91,8 +91,7 @@ def tutoriaClase(request):
     alum=buscar_alumnos_tutoria(request)
     return render(request,'contenidoTutor.html',{"alum":alum,"perfil":prof,"rol":"profesor"})
 
-def anadirTrabajo(request):
-    prof=buscar_profesor_dni(request)
+
 #Busquedas
 
 def buscar_alumno(my_frm):
@@ -120,8 +119,16 @@ def buscar_alumno_dni(request):
     else:
         return alum
     
+def buscar_alumno_dni_Nsession(alum):
+    try:
+        alum=Alumnos.objects.get(dni=alum.dni_alumno)
+    except Alumnos.DoesNotExist:
+            return None
+    else:
+        return alum
+    
 def buscar_profesor_nombre_apellidos(my_frm):
-    nombreYapellidos=my_frm.cleaned_data["profesor"].split()
+    nombreYapellidos=my_frm.cleaned_data["nombre_alumno"].split()
     try:
         prof=Profesor.objects.get(nombre=nombreYapellidos[0],apellidos=" ".join(nombreYapellidos[1:]))
     except Profesor.DoesNotExist:
@@ -130,7 +137,7 @@ def buscar_profesor_nombre_apellidos(my_frm):
         return prof
     
 def buscar_alumno_nombre_apellidos(my_frm):
-    nombreYapellidos=my_frm.cleaned_data["profesor"].split()
+    nombreYapellidos=my_frm.cleaned_data["nombre_alumno"].split()
     try:
         alum=Alumnos.objects.get(nombre=nombreYapellidos[0],apellidos=" ".join(nombreYapellidos[1:]))
     except Alumnos.DoesNotExist:
@@ -164,7 +171,7 @@ def buscar_asignaturas_alumno(request):
     else:
         return asig
     
-def notas_al(request):
+def buscar_notas_al(request):
     try:
         notas=Notas.objects.get_queryset().filter(dni_alumno=request.session["logueado"]["dni"])
     except Notas.DoesNotExist:
@@ -172,21 +179,47 @@ def notas_al(request):
     else:
         return notas
     
-def trabajos_al(request):
+def buscar_trabajos_al(request):
     try:
         notas=Trabajos.objects.get_queryset().filter(dni_alumnos=request.session["logueado"]["dni"])
-    except Notas.DoesNotExist:
+    except Trabajos.DoesNotExist:
             return None
     else:
         return notas
     
-def incidencias_al(request):
+def buscar_incidencias_al(request):
     try:
         inci=Asistencias.objects.get_queryset().filter(dni_alumnos=request.session["logueado"]["dni"])
-    except Notas.DoesNotExist:
+    except Asistencias.DoesNotExist:
             return None
     else:
         return inci
+    
+def buscar_incidencias_dni(al):
+    try:
+        dicIncidencias={}
+        inci=Asistencias.objects.get_queryset().filter(dni_alumnos=al.dni)
+        name=f"{al.nombre} {al.apellidos}"
+        if (inci!=None):
+            dicIncidencias[name]=inci
+    except Asistencias.DoesNotExist:
+            return None
+    else:
+        return dicIncidencias
+    
+def buscar_incidencias_todos(request):
+    try:
+        alumnosCurso=buscar_alumnos_tutoria(request)
+        dicIncidencias={}
+        for al in alumnosCurso:
+            name=f"{al.nombre} {al.apellidos}"
+            inci=Asistencias.objects.get_queryset().filter(dni_alumnos=al.dni)
+            if inci.exists():
+                dicIncidencias[name]=list(inci)
+    except Asistencias.DoesNotExist:
+            return None
+    else:
+        return dicIncidencias
     
 
 def buscar_trabajos_asignatura_profesor(request):
@@ -215,14 +248,17 @@ def buscar_asignatura_profesor(request):
 def buscar_nota_asignatura_alumno(request):
     try:
         asig=buscar_asignatura_profesor(request)
-        listaNotas=[]
+        dicNotas={}
         for a in asig:
             nota=Notas.objects.get_queryset().filter(nom_asignatura=a.nombre)
-            listaNotas.extend(nota)
-    except Notas.DoesNotExist or listaNotas.count==0:
+            if nota.exists():
+                al=buscar_alumno_dni_Nsession(nota)
+                name=f"{al.nombre} {al.apellidos}"
+                dicNotas[name]=list(nota)
+    except Notas.DoesNotExist:
             return None
     else:
-        return listaNotas
+        return dicNotas
     
 # def buscar_alumnos_por_nota(notas):
 #     try:
@@ -288,3 +324,19 @@ def anadir_trabajo_profesor(request):
         my_frm=TrabajoForm()
     return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
+def incidencias_alumnos(request):
+    perfil=buscar_profesor_dni(request)
+    rol="profesor"
+    if request.method=='POST':
+        my_frm=BuscarIncidenciasForm(request.POST)
+        if my_frm.is_valid():
+            alumno=buscar_alumno_nombre_apellidos(my_frm)
+            if(alumno==None):
+                return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
+            inci=buscar_incidencias_dni(alumno)
+            my_frm=BuscarIncidenciasForm()
+            return render(request,'contenidoIncidenciasAlumnos.html',{'form':my_frm,"perfil":perfil,"incidencias":inci,"rol":rol})
+    else:
+        my_frm=BuscarIncidenciasForm()
+        inci=buscar_incidencias_todos(request)
+    return render(request,'contenidoIncidenciasAlumnos.html',{'form':my_frm,"perfil":perfil,"incidencias":inci,"rol":rol})

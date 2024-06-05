@@ -75,13 +75,17 @@
 </div>
 
 <div class="container">
-  {% if rol == 'alumno' %}
+  
   <div class="card text-center" style="width: 18rem;">
     
     <div class="card-body">
       <img  alt="Card image cap" src="{% static 'image/perfil.png' %}" id="imgLogo" class="rounded-circle" style="width: 200px;height: 200px;">
+    {% if rol == 'profesor' %}
     <input type="file" class="custom-file-input" id="foto" name="foto">
+     
     <label class="label">Cambiar foto</label>
+    {% endif %}
+    {% if rol == 'alumno' %}
       <h5 class="card-title"></b>{{tutor.nombre}} {{tutor.apellidos}}</h5>
       <p class="card-text"><b>Telefono: </b>{{tutor.telefono}}</p>
       <p class="card-text"><b>Email: </b>{{tutor.email}}</p>
@@ -90,24 +94,21 @@
       
     </div>
   </div>
+  {% elif rol == 'profesor' %}
   <div class="card" style="width: 18rem;" id="carta">
     <ul class="list-group list-group-flush">
-      
-      <li class="list-group-item" id="lBorde"><b>Nombre: </li>
-      <li class="list-group-item" id="lBorde"></li>
-      <li class="list-group-item" id="lBorde"></li>
-      <li class="list-group-item" id="lBorde"></li>
-      {% elif rol == 'profesor' %}
-      {% for a in alum %}
-      <li class="list-group-item"><b>Nombre: </b>{{a.nombre}} {{a.apellidos}}</li>
-      <li class="list-group-item"><b>Telefono: </b>{{a.telefono}}</li>
-      <li class="list-group-item"><b>Email: </b>{{a.email}}</li>
-      <li class="list-group-item"><b>Faltas: </b>{{a.faltas}}</li>
-      <li class="list-group-item"><b>Retrasos: </b>{{a.retrasos}}</li>
-      {% endfor %}
-      {% endif %}
-    </ul>
 
+      
+        {% for a in alum %}
+          <li class="list-group-item"><b>Nombre: </b>{{a.nombre}} {{a.apellidos}}</li>
+          <li class="list-group-item"><b>Telefono: </b>{{a.telefono}}</li>
+          <li class="list-group-item"><b>Email: </b>{{a.email}}</li>
+          <li class="list-group-item"><b>Faltas: </b>{{a.faltas}}</li>
+          <li class="list-group-item"><b>Retrasos: </b>{{a.retrasos}}</li>
+        {% endfor %}
+    
+    </ul>
+    {% endif %}
   </div>
   
 </div>
