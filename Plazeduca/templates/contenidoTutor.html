@@ -1,4 +1,5 @@
 {%extends 'base.html' %}{%block contenido%}
+{% load static %}
 <style>
   #fila {
     border-top: 2px#80c766 outset;
@@ -16,8 +17,25 @@
   #lBorde{
     border-color:black;
   }
+  .label{
+    background-color: #343A40;color: whitesmoke;
+    width: 100px; 
+    height: 40px; 
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-left: 2px;
+    margin-top: -38px;
+  }
+#foto{
+  margin-top: 30px;
+}
+  .label:hover{
+    background-color: black;
+  }
+  
 
 </style>
+
 <div class="container-fluid">
   <div class="row">
     <nav class="col-md-2 sidebar" id="slide">
@@ -55,14 +73,30 @@
     </nav>
   </div>
 </div>
+
 <div class="container">
+  {% if rol == 'alumno' %}
+  <div class="card text-center" style="width: 18rem;">
+    
+    <div class="card-body">
+      <img  alt="Card image cap" src="{% static 'image/perfil.png' %}" id="imgLogo" class="rounded-circle" style="width: 200px;height: 200px;">
+    <input type="file" class="custom-file-input" id="foto" name="foto">
+    <label class="label">Cambiar foto</label>
+      <h5 class="card-title"></b>{{tutor.nombre}} {{tutor.apellidos}}</h5>
+      <p class="card-text"><b>Telefono: </b>{{tutor.telefono}}</p>
+      <p class="card-text"><b>Email: </b>{{tutor.email}}</p>
+      <p class="card-text"><b>Cursos: </b>{{tutor.cursos}}</p>
+      <a href="{% url 'cita' %}" class="btn btn-dark">Pedir reunion</a>
+      
+    </div>
+  </div>
   <div class="card" style="width: 18rem;" id="carta">
     <ul class="list-group list-group-flush">
-      {% if rol == 'alumno' %}
-      <li class="list-group-item" id="lBorde"><b>Nombre: </b>{{tutor.nombre}} {{tutor.apellidos}}</li>
-      <li class="list-group-item" id="lBorde"><b>Telefono: </b>{{tutor.telefono}}</li>
-      <li class="list-group-item" id="lBorde"><b>Email: </b>{{tutor.email}}</li>
-      <li class="list-group-item" id="lBorde"><b>Cursos: </b>{{tutor.cursos}}</li>
+      
+      <li class="list-group-item" id="lBorde"><b>Nombre: </li>
+      <li class="list-group-item" id="lBorde"></li>
+      <li class="list-group-item" id="lBorde"></li>
+      <li class="list-group-item" id="lBorde"></li>
       {% elif rol == 'profesor' %}
       {% for a in alum %}
       <li class="list-group-item"><b>Nombre: </b>{{a.nombre}} {{a.apellidos}}</li>
@@ -73,11 +107,24 @@
       {% endfor %}
       {% endif %}
     </ul>
-    <div class="card-body">
-      <a href="{% url 'cita' %}" class="card-link" id="link">Pedir reunion</a>
-    </div>
+
   </div>
   
 </div>
 </div>
+<script>
+  const file = document.getElementById('foto');
+  const img = document.getElementById('imgLogo');
+  file.addEventListener('change', e =>{
+    if(e.target.files[0]){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        img.src = e.target.result;
+      }
+      reader.readAsDataURL(e.target.files[0])
+    }else{
+      img.src = defaultFile;
+    }
+  });
+</script>
 {%endblock%}
