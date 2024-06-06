@@ -65,7 +65,13 @@ def tutorCurso(request):
     perfil=buscar_alumno_dni(request)
     return render(request,'contenidoTutor.html',{"tutor":tutor,"perfil":perfil,"rol":"alumno"})
 
-
+def mostrarCalendario(request):
+    perfil=buscar_alumno_dni(request)
+    rol="alumno"
+    if(perfil==None):
+        perfil=buscar_profesor_dni(request)
+        rol="profesor"
+    return render(request,'contenidoCalendario.html',{"perfil":perfil,"rol":rol})
 
         
 
@@ -90,7 +96,6 @@ def tutoriaClase(request):
     prof=buscar_profesor_dni(request)
     alum=buscar_alumnos_tutoria(request)
     return render(request,'contenidoTutor.html',{"alum":alum,"perfil":prof,"rol":"profesor"})
-
 
 #Busquedas
 
@@ -248,17 +253,14 @@ def buscar_asignatura_profesor(request):
 def buscar_nota_asignatura_alumno(request):
     try:
         asig=buscar_asignatura_profesor(request)
-        dicNotas={}
+        listNotas=[]
         for a in asig:
             nota=Notas.objects.get_queryset().filter(nom_asignatura=a.nombre)
-            if nota.exists():
-                al=buscar_alumno_dni_Nsession(nota)
-                name=f"{al.nombre} {al.apellidos}"
-                dicNotas[name]=list(nota)
+            listNotas.extend(nota)
     except Notas.DoesNotExist:
             return None
     else:
-        return dicNotas
+        return listNotas
     
 # def buscar_alumnos_por_nota(notas):
 #     try:

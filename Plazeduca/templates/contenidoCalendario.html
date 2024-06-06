@@ -1,0 +1,104 @@
+{%extends 'base.html' %}{%block contenido%}
+<script src='https://cdn.jsdelivr.net/npm/rrule@2.6.4/dist/es5/rrule.min.js'></script>
+
+<!-- fullcalendar bundle  "IMPORTANT"--> 
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<!-- or download fullcalendar@6.x.xx (static) and link it from there -->
+
+<!-- the rrule-to-fullcalendar connector. must go AFTER the rrule lib -->
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@6.1.11/index.global.min.js'></script>
+<style>
+    #calendar {
+        max-width: 900px;
+ 
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 sidebar" id="slide">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column" id="centrar">
+            {% if rol == 'alumno' %}
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+              </li>
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'trabajosAl' %}"> Trabajos </a>
+              </li>
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'asignaturas' %}"> Asignaturas </a>
+              </li>
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'notasAl' %}"> Boletín de notas </a>
+              </li>
+            {% elif rol == 'profesor' %}
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+              </li>
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'trabajosProf' %}"> Trabajos </a>
+              </li>
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'asignaturasProf' %}"> Asignaturas </a>
+              </li>
+              <li class="nav-item" id="enlace">
+                <a class="en" href="{% url 'notasProf' %}"> Boletín de notas </a>
+              </li>
+              {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+<div id="calendar"></div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today', 
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: [
+                    {
+                        title: 'Ultima tutoria',
+                        start: '2024-06-07',
+                        allDay: true
+                    },
+                    {
+                        title: 'Graduación',
+                        start: '2024-06-14',
+                        allDay: true
+                    },
+                    {
+                        title: 'Fin prácticas Alejandro Tenorio',
+                        start: '2024-06-14',
+                        allDay: true
+                    },
+                    {
+                        title: 'Entregar documentacion',
+                        start: '2024-06-14',
+                        allDay: true
+                    },
+                    {
+                        title: 'Defender TFG',
+                        start: '2024-06-18',
+                        allDay: true
+                    },
+                    {
+                        title: 'Fin prácticas Oscar Acedo',
+                        start: '2024-06-19',
+                        allDay: true
+                    }
+                ]
+            });
+            calendar.render();
+        });
+
+</script>
+
+{% endblock %}
