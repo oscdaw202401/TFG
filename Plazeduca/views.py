@@ -1,20 +1,31 @@
 import datetime
 from django.contrib.auth import logout
 from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login
 from Plazeduca.forms import BuscarIncidenciasForm, CitaForm, Login, TrabajoForm
-from Plazeduca.models import Alumnos, Asignaturas, Asistencias, Citas, Notas, Profesor, Trabajos
+from Plazeduca.models import Administrador, Alumnos, Asignaturas, Asistencias, Citas, Notas, Profesor, Trabajos
 
 
 def inicio(request):
     if request.method=='POST':
         my_frm=Login(request.POST)
+        
         if my_frm.is_valid():
+            admin=buscar_admin(my_frm)
+            if(admin is not None):
+                username = admin.usuario
+                password = admin.password
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    if user.is_staff:  
+                        login(request, user)  
+                        return redirect('/admin/')   
             alum=buscar_alumno(my_frm)
             prof=buscar_profesor(my_frm)
-            if(alum!=None):
+            if(alum is not None):
                 request.session['logueado']={"dni":alum.dni}
                 return redirect('base')
-            elif(prof!=None):
+            elif(prof is not None):
                 request.session['logueado']={"dni":prof.dni}
                 return redirect('base')
             else:
@@ -22,13 +33,15 @@ def inicio(request):
     else:
         my_frm=Login()
     return render(request,'login.html',{'form':my_frm})
-    
+
+
 def base(request):
     perfil=buscar_alumno_dni(request)
     if(perfil==None):
         perfil=buscar_profesor_dni(request)
         return render(request,'contenidoProfesor.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil,"rol":"profesor"})
     return render(request,'contenidoAlumno.html',{"sesion":request.session["logueado"]["dni"],"perfil":perfil,"rol":"alumno"})
+
 
 #Alumnos
 
@@ -98,6 +111,14 @@ def tutoriaClase(request):
     return render(request,'contenidoTutor.html',{"alum":alum,"perfil":prof,"rol":"profesor"})
 
 #Busquedas
+
+def buscar_admin(my_frm):
+    try:
+        admin=Administrador.objects.get(usuario=my_frm.cleaned_data["usuario"],password=my_frm.cleaned_data["contrasena"])
+    except Administrador.DoesNotExist:
+        return None
+    else:
+        return admin
 
 def buscar_alumno(my_frm):
     try:
@@ -273,6 +294,7 @@ def buscar_nota_asignatura_alumno(request):
 #     else:
 #         return listaAlumnos
     
+
 def buscar_alumnos_tutoria(request):
     try:
         prof=buscar_profesor_dni(request)
