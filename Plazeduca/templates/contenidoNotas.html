@@ -5,6 +5,10 @@
     border-bottom: #80c766 2px outset;
 
   }
+  #link{
+  text-decoration: none;
+  color: whitesmoke;
+}
 </style>
 <div class="container-fluid">
   <div class="row">
@@ -64,6 +68,9 @@
       {% endfor%}
     </tbody>
   </table>
+  {% if rol == 'profesor' %}
+  <button class="btn btn-dark btn-lg" style="margin-left: 300px;"><a href="{% url 'anadirNota' %}" id="link"> Añadir trabajo</a></button>
+  {% endif %}
 </div>
 </div>
 {%endblock%}

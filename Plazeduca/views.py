@@ -2,7 +2,7 @@ import datetime
 from django.contrib.auth import logout
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
-from Plazeduca.forms import BuscarIncidenciasForm, CitaForm, Login, TrabajoForm
+from Plazeduca.forms import AsignaturaForm, BuscarIncidenciasForm, CitaForm, Login, TrabajoForm
 from Plazeduca.models import Administrador, Alumnos, Asignaturas, Asistencias, Citas, Notas, Profesor, Trabajos
 
 
@@ -347,6 +347,24 @@ def anadir_trabajo_profesor(request):
     else:
         my_frm=TrabajoForm()
     return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"rol":rol})
+
+def anadir_nota_profesor(request):
+    perfil=buscar_profesor_dni(request)
+    rol="profesor"
+    if request.method=='POST':
+        my_frm=AsignaturaForm(request.POST)
+        if my_frm.is_valid():
+            alumno=buscar_alumno_nombre_apellidos(my_frm)
+            if(alumno==None):
+                return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
+            fecha_formateada= my_frm.cleaned_data["fecha_subida"].strftime('%Y-%m-%d')
+            my_frm.cleaned_data["fecha_subida"]=fecha_formateada
+            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["nom_asignatura"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
+            asig.save()
+            return redirect("base")
+    else:
+        my_frm=AsignaturaForm()
+    return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
 def incidencias_alumnos(request):
     perfil=buscar_profesor_dni(request)

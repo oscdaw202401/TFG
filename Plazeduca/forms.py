@@ -1,3 +1,4 @@
+import datetime
 from django import forms
 
 class Login(forms.Form):
@@ -37,3 +38,17 @@ class TrabajoForm(forms.Form):
 class BuscarIncidenciasForm(forms.Form):
     nombre_alumno=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Busca las incidencias de alumno introducido"}))
     
+class AsignaturaForm(forms.Form):
+    examen=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre del examen"}))
+    nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
+    nombre_alumno = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del alumno'}))
+    fecha_subida = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de subida ','type': 'date'}))
+    nota = forms.IntegerField(required=True,widget=forms.NumberInput(attrs={'class': 'form-control','placeholder': 'Nota del alumno'}))
+    
+    def clean_fecha(self):
+        fecha_subida = self.cleaned_data["fecha_subida"]
+        
+        if fecha_subida:
+            if fecha_subida > datetime.date.today().strftime("%Y-%m-%d"):
+                raise forms.ValidationError("La fecha inicial no puede ser posterior a la fecha de hoy")
+        return fecha_subida
