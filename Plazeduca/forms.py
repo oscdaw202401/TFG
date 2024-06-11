@@ -52,3 +52,7 @@ class AsignaturaForm(forms.Form):
             if fecha_subida > datetime.date.today().strftime("%Y-%m-%d"):
                 raise forms.ValidationError("La fecha inicial no puede ser posterior a la fecha de hoy")
         return fecha_subida
+    
+
+#class IncidenciaForm(forms.Form):
+    

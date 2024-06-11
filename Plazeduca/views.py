@@ -366,6 +366,22 @@ def anadir_nota_profesor(request):
         my_frm=AsignaturaForm()
     return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
+def anadir_incidencia_profesor(request):
+    perfil=buscar_profesor_dni(request)
+    rol="profesor"
+    if request.method=='POST':
+        my_frm=AsignaturaForm(request.POST)
+        if my_frm.is_valid():
+            alumno=buscar_alumno_nombre_apellidos(my_frm)
+            if(alumno==None):
+                return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
+            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["nom_asignatura"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
+            asig.save()
+            return redirect("base")
+    else:
+        my_frm=AsignaturaForm()
+    return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"rol":rol})
+    
 def incidencias_alumnos(request):
     perfil=buscar_profesor_dni(request)
     rol="profesor"
