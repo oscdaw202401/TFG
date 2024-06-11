@@ -6,14 +6,14 @@ class Login(forms.Form):
     contrasena=forms.CharField(max_length=50,required=True,widget=forms.PasswordInput(attrs= {'class':'form-control','placeholder':"Tu contraseña"}),label="Contraseña")
 
 class CitaForm(forms.Form):
-    profesor=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre con quien quieres la reunión"}))
+    receptor=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre con quien quieres la reunión"}))
     motivo=forms.CharField(max_length=200,required=True,widget=forms.Textarea(attrs= {'class':'form-control','placeholder':"Motivo de la reunion"}),label="Nombre")
 
 class TrabajoForm(forms.Form):
     trabajo=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre del trabajo"}))
     fecha_inicial = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de inicio','type': 'date'}))
     fecha_final = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de inicio','type': 'date'}))
-    nombre_alumno = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del Alumno'}))
+    receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del Alumno'}))
     nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
 
 
@@ -36,12 +36,12 @@ class TrabajoForm(forms.Form):
         return fecha_final
 
 class BuscarIncidenciasForm(forms.Form):
-    nombre_alumno=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Busca las incidencias de alumno introducido"}))
+    receptor=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Busca las incidencias de alumno introducido"}))
     
 class AsignaturaForm(forms.Form):
     examen=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre del examen"}))
     nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
-    nombre_alumno = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del alumno'}))
+    receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del alumno'}))
     fecha_subida = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de subida ','type': 'date'}))
     nota = forms.IntegerField(required=True,widget=forms.NumberInput(attrs={'class': 'form-control','placeholder': 'Nota del alumno'}))
     

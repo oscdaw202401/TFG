@@ -67,11 +67,17 @@ class Trabajos(models.Model):
     
 class Citas(models.Model):
     id=models.AutoField(primary_key=True)
-    dni_profesor=models.CharField(max_length=50)
-    dni_alumnos=models.CharField(max_length=20)
+    emisor=models.CharField(max_length=50)
+    receptor=models.CharField(max_length=20)
     fecha_envio=models.DateTimeField()
     motivo=models.TextField(max_length=100)
     
-
+class Notificaciones(models.Model):
+    id=models.AutoField(primary_key=True)
+    notificacion=models.CharField(max_length=100)
+    categoria=models.CharField(max_length=50)
+    emisario=models.CharField(max_length=50)
+    receptor=models.CharField(max_length=50)
+    fecha_envio=models.DateField()
     
     
