@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
 from Plazeduca.forms import AsignaturaForm, BuscarIncidenciasForm, CitaForm, Login, TrabajoForm
-from Plazeduca.models import Administrador, Alumnos, Asignaturas, Asistencias, Citas, Notas, Profesor, Trabajos
+from Plazeduca.models import Administrador, Alumnos, Asignaturas, Asistencias, Citas, Notas, Notificaciones, Profesor, Trabajos
 
 
 def inicio(request):
@@ -86,8 +86,14 @@ def mostrarCalendario(request):
         rol="profesor"
     return render(request,'contenidoCalendario.html',{"perfil":perfil,"rol":rol})
 
-        
-
+def mostrarNotis(request):
+    perfil=buscar_alumno_dni(request)
+    rol="alumno"
+    if(perfil==None):
+        perfil=buscar_profesor_dni(request)
+        rol="profesor"
+    notif=buscar_notificaciones(request)
+    return render(request,'contenidoNotificaciones.html',{"notif":notif,"perfil":perfil,"rol":rol})
 #Profesor
 
 def trabajosProfesor(request):
@@ -111,6 +117,7 @@ def tutoriaClase(request):
     return render(request,'contenidoTutor.html',{"alum":alum,"perfil":prof,"rol":"profesor"})
 
 #Busquedas
+
 
 def buscar_admin(my_frm):
     try:
@@ -136,7 +143,22 @@ def buscar_profesor(my_frm):
             return None
     else:
         return prof
-    
+
+def buscar_notificaciones(request):
+    try:
+        dicNoti={}
+        recep=buscar_alumno_dni(request)
+        if(recep is None):
+            recep=buscar_profesor_dni(request)
+        inci=Notificaciones.objects.get_queryset().filter(receptor=recep.dni)
+        emisor=inci.get("emisario")
+        if (inci!=None):
+            dicNoti[name]=inci
+    except Notificaciones.DoesNotExist:
+            return None
+    else:
+        return dicNoti
+     
 def buscar_alumno_dni(request):
     try:
         alum=Alumnos.objects.get(dni=request.session["logueado"]["dni"])
@@ -154,8 +176,9 @@ def buscar_alumno_dni_Nsession(alum):
         return alum
     
 def buscar_profesor_nombre_apellidos(my_frm):
-    nombreYapellidos=my_frm.cleaned_data["nombre_alumno"].split()
+
     try:
+        nombreYapellidos=my_frm.cleaned_data["receptor"].split()
         prof=Profesor.objects.get(nombre=nombreYapellidos[0],apellidos=" ".join(nombreYapellidos[1:]))
     except Profesor.DoesNotExist:
             return None
@@ -163,10 +186,11 @@ def buscar_profesor_nombre_apellidos(my_frm):
         return prof
     
 def buscar_alumno_nombre_apellidos(my_frm):
-    nombreYapellidos=my_frm.cleaned_data["nombre_alumno"].split()
+    
     try:
+        nombreYapellidos=my_frm.cleaned_data["receptor"].split()
         alum=Alumnos.objects.get(nombre=nombreYapellidos[0],apellidos=" ".join(nombreYapellidos[1:]))
-    except Alumnos.DoesNotExist:
+    except Alumnos.DoesNotExist :
             return None
     else:
         return alum
@@ -319,13 +343,15 @@ def anadir_cita(request):
         if my_frm.is_valid():
             if(rol=="profesor"):
                 reunion=buscar_alumno_nombre_apellidos(my_frm)
-            reunion=buscar_profesor_nombre_apellidos(my_frm)
+            else:
+                reunion=buscar_profesor_nombre_apellidos(my_frm)
             if(reunion==None):
                 return render(request,'contenidoCitas.html',{'form':my_frm,"perfil":perfil,"mensaje":"No existe nadie con ese nombre","rol":rol})
             timeNow = datetime.datetime.now()
             lastId=Citas.objects.latest("id").id+1
             formatedTimeNow = timeNow.strftime("%Y-%m-%d %H:%M:%S")
-            cita=Citas(lastId,reunion.dni,perfil.dni,formatedTimeNow,my_frm.cleaned_data["motivo"])
+            cita=Citas(lastId,perfil.dni,reunion.dni,formatedTimeNow,my_frm.cleaned_data["motivo"])
+            anadir_notificacion(cita,request)
             cita.save()
             return redirect("base")
     else:
@@ -342,6 +368,7 @@ def anadir_trabajo_profesor(request):
             if(alumno==None):
                 return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
             trab=Trabajos(my_frm.cleaned_data["trabajo"],my_frm.clean_fecha(),my_frm.clean_fecha_final(),alumno.dni,my_frm.cleaned_data["nom_asignatura"])
+            anadir_notificacion(trab,request)
             trab.save()
             return redirect("base")
     else:
@@ -360,6 +387,7 @@ def anadir_nota_profesor(request):
             fecha_formateada= my_frm.cleaned_data["fecha_subida"].strftime('%Y-%m-%d')
             my_frm.cleaned_data["fecha_subida"]=fecha_formateada
             asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["nom_asignatura"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
+            anadir_notificacion(asig,request)
             asig.save()
             return redirect("base")
     else:
@@ -398,3 +426,17 @@ def incidencias_alumnos(request):
         my_frm=BuscarIncidenciasForm()
         inci=buscar_incidencias_todos(request)
     return render(request,'contenidoIncidenciasAlumnos.html',{'form':my_frm,"perfil":perfil,"incidencias":inci,"rol":rol})
+
+def anadir_notificacion(objeto,request):
+    lastId=Notificaciones.objects.latest("id").id+1
+    if isinstance(objeto, Citas):
+        noti = Notificaciones(lastId,"Reunion", objeto.__class__.__name__,objeto.emisor,objeto.receptor,datetime.date.today())
+    elif isinstance(objeto, Trabajos):
+        noti = Notificaciones(lastId,objeto.trabajo, objeto.__class__.__name__,request.session["logueado"]["dni"],objeto.dni_alumnos,datetime.date.today())
+    elif isinstance(objeto, Notas):
+        noti = Notificaciones(lastId,objeto.examen, objeto.__class__.__name__,request.session["logueado"]["dni"],objeto.dni_alumno,datetime.date.today())
+    elif isinstance(objeto, Asistencias):
+        #Cambiarlo
+        noti = Notificaciones(lastId,objeto.examen, objeto.__class__.__name__,request.session["logueado"]["dni"],objeto.dni_alumno,datetime.date.today())
+    noti.save()
+    return redirect('base')

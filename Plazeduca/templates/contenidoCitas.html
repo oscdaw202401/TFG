@@ -80,7 +80,7 @@
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"></span>
                             <div class="col-md-8">
-                                <input id="profesor" name="profesor" type="text" placeholder="Introduzca con quién quiere la reunión" class="form-control">
+                                <input id="receptor" name="receptor" type="text" placeholder="Introduzca con quién quiere la reunión" class="form-control">
                             </div>
                             {% if mensaje %}
     <p>{{mensaje}}</p>
@@ -89,7 +89,7 @@
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"></span>
                             <div class="col-md-8">
-                                <input id="alumno" type="text" disabled class="form-control" value="{{perfil.nombre}} {{perfil.apellidos}}">
+                                <input id="emisor" type="text" disabled class="form-control" value="{{perfil.nombre}} {{perfil.apellidos}}">
                             </div>
                         </div>
 
