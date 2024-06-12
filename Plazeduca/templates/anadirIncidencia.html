@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"></span>
                             <div class="col-md-8">
-                                {{form.examen}}
+                                {{form.receptor}}
                             </div>
                         </div>
                         <div class="form-group">
@@ -87,24 +87,16 @@
                                 {{form.nom_asignatura}}
                             </div>
                         </div>
-                        <div class="form-group">
-                            <span class="col-md-1 col-md-offset-2 text-center"></i></span>
-                            <div class="col-md-8">
-                                {{form.nombre_alumno}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span>{{form.fecha_inicial.errors}}</span>
-                            <div class="col-md-8">
-                                {{form.fecha_subida}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="col-md-1 col-md-offset-2 text-center"></i></span>
-                            <div class="col-md-8">
-                                {{form.nota}}
-                            </div>
-                        </div>
+                        <div class="form-check">
+                          <span class="col-md-1 col-md-offset-2 text-center"></i></span>
+                          <div class="col-md-8">
+                            {% for radio in form.falta %}
+                            <label class="radio-inline">
+                                {{ radio.tag }} {{ radio.choice_label}}
+                            </label>
+                          {% endfor %}
+                          </div>
+                      </div>
                         <div class="form-group">
                             <div class="col-md-12 text-center">
                                 <button type="submit" class="btn btn-dark btn-lg" id="boton">Enviar</button>

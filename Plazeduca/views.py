@@ -2,7 +2,7 @@ import datetime
 from django.contrib.auth import logout
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
-from Plazeduca.forms import AsignaturaForm, BuscarIncidenciasForm, CitaForm, Login, TrabajoForm
+from Plazeduca.forms import AsignaturaForm, BuscarIncidenciasForm, CitaForm, IncidenciaForm, Login, TrabajoForm
 from Plazeduca.models import Administrador, Alumnos, Asignaturas, Asistencias, Citas, Notas, Notificaciones, Profesor, Trabajos
 
 
@@ -257,6 +257,15 @@ def buscar_incidencias_dni(al):
     else:
         return dicIncidencias
     
+def buscar_incidencias_dni_asignatura(my_frm):
+    try:
+        alumno=buscar_alumno_nombre_apellidos(my_frm)
+        inci=Asistencias.objects.get(dni_alumnos=alumno.dni,nom_asignatura=my_frm.cleaned_data["nom_asignatura"])
+    except Asistencias.DoesNotExist:
+            return None
+    else:
+        return inci
+    
 def buscar_incidencias_todos(request):
     try:
         alumnosCurso=buscar_alumnos_tutoria(request)
@@ -398,16 +407,44 @@ def anadir_incidencia_profesor(request):
     perfil=buscar_profesor_dni(request)
     rol="profesor"
     if request.method=='POST':
-        my_frm=AsignaturaForm(request.POST)
+        my_frm=IncidenciaForm(request.POST)
+        lon=len(my_frm.changed_data)
+        if(lon==2):
+            form_data = request.POST.copy()         
+            form_data['falta'] = False
+            my_frm = IncidenciaForm(form_data)
         if my_frm.is_valid():
             alumno=buscar_alumno_nombre_apellidos(my_frm)
             if(alumno==None):
                 return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
-            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["nom_asignatura"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
-            asig.save()
+            incidencia=buscar_incidencias_dni_asignatura(my_frm)
+            if(incidencia is not None):
+                if(my_frm.cleaned_data["falta"] == True):
+                    incidencia.num_faltas+=1
+                if(my_frm.cleaned_data["falta"] == False):
+                    if(incidencia.num_retrasos == 2):
+                        incidencia.num_faltas+=1
+                        incidencia.num_retrasos=0
+                    else:
+                        incidencia.num_retrasos+=1
+                Asistencias.objects.filter(dni_alumnos=incidencia.dni_alumnos,nom_asignatura=incidencia.nom_asignatura).update(
+                dni_alumnos=incidencia.dni_alumnos,
+                num_faltas=incidencia.num_faltas,
+                num_retrasos=incidencia.num_retrasos,
+                nom_asignatura=incidencia.nom_asignatura,
+            )
+            else:
+                falta=0
+                retraso=0
+                if(my_frm.cleaned_data["falta"] == True):
+                    falta=1
+                else:
+                    retraso=1
+                asis=Asistencias(alumno.dni,falta,retraso, my_frm.cleaned_data["nom_asignatura"])
+                asis.save()
             return redirect("base")
     else:
-        my_frm=AsignaturaForm()
+        my_frm=IncidenciaForm()
     return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"rol":rol})
     
 def incidencias_alumnos(request):
