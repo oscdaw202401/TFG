@@ -151,7 +151,12 @@ def buscar_notificaciones(request):
         if(recep is None):
             recep=buscar_profesor_dni(request)
         inci=Notificaciones.objects.get_queryset().filter(receptor=recep.dni)
-        emisor=inci.get("emisario")
+        name=f"{recep.nombre} {recep.apellidos}"
+        for noti in inci :
+            emisor=buscar_alumno_dni_Nsession(noti.emisario)
+            if emisor is None:
+                emisor=buscar_profesor_dni_Nsession(noti.emisario)
+            noti.emisario=f"{emisor.nombre} {emisor.apellidos}"
         if (inci!=None):
             dicNoti[name]=inci
     except Notificaciones.DoesNotExist:
@@ -167,9 +172,9 @@ def buscar_alumno_dni(request):
     else:
         return alum
     
-def buscar_alumno_dni_Nsession(alum):
+def buscar_alumno_dni_Nsession(dniS):
     try:
-        alum=Alumnos.objects.get(dni=alum.dni_alumno)
+        alum=Alumnos.objects.get(dni=dniS)
     except Alumnos.DoesNotExist:
             return None
     else:
@@ -194,6 +199,14 @@ def buscar_alumno_nombre_apellidos(my_frm):
             return None
     else:
         return alum
+    
+def buscar_profesor_dni_Nsession(dniS):
+    try:
+        prof=Profesor.objects.get(dni=dniS)
+    except Profesor.DoesNotExist:
+            return None
+    else:
+        return prof
     
 def buscar_profesor_dni(request):
     try:
@@ -394,22 +407,6 @@ def anadir_nota_profesor(request):
         my_frm=AsignaturaForm()
     return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
-def anadir_incidencia_profesor(request):
-    perfil=buscar_profesor_dni(request)
-    rol="profesor"
-    if request.method=='POST':
-        my_frm=AsignaturaForm(request.POST)
-        if my_frm.is_valid():
-            alumno=buscar_alumno_nombre_apellidos(my_frm)
-            if(alumno==None):
-                return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
-            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["nom_asignatura"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
-            asig.save()
-            return redirect("base")
-    else:
-        my_frm=AsignaturaForm()
-    return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"rol":rol})
-    
 def incidencias_alumnos(request):
     perfil=buscar_profesor_dni(request)
     rol="profesor"
@@ -430,7 +427,7 @@ def incidencias_alumnos(request):
 def anadir_notificacion(objeto,request):
     lastId=Notificaciones.objects.latest("id").id+1
     if isinstance(objeto, Citas):
-        noti = Notificaciones(lastId,"Reunion", objeto.__class__.__name__,objeto.emisor,objeto.receptor,datetime.date.today())
+        noti = Notificaciones(lastId,objeto.motivo, "Reunión",objeto.emisor,objeto.receptor,datetime.date.today())
     elif isinstance(objeto, Trabajos):
         noti = Notificaciones(lastId,objeto.trabajo, objeto.__class__.__name__,request.session["logueado"]["dni"],objeto.dni_alumnos,datetime.date.today())
     elif isinstance(objeto, Notas):

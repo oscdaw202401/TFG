@@ -62,9 +62,10 @@
             {% for alumno, notisdic in notif.items %}
             {% for notis in notisdic %}
             <tr>
-              <td>{{ notis.nom_asignatura }}</td>
-              <td>{{ notis.num_faltas }}</td>
-              <td>{{ notis.num_retrasos }}</td>
+              <td>{{ notis.notificacion }}</td>
+              <td>{{ notis.categoria }}</td>
+              <td>{{ notis.emisario }}</td>
+              <td>{{ notis.fecha_envio | date:"d/m/Y" }}</td>
             </tr>
             {% endfor %}
           {% endfor %}
