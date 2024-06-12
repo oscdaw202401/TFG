@@ -54,5 +54,8 @@ class AsignaturaForm(forms.Form):
         return fecha_subida
     
 
-#class IncidenciaForm(forms.Form):
+class IncidenciaForm(forms.Form):
+    receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del Alumno'}))
+    nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
+    falta = forms.BooleanField(required=True,widget=forms.RadioSelect(choices=((True, 'Falta'), (False, 'Retraso'))))
     

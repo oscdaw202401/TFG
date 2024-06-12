@@ -52,10 +52,11 @@ class Notas(models.Model):
     examen=models.CharField(max_length=50,primary_key=True)
     
 class Asistencias(models.Model):
-    dni_alumnos=models.CharField(max_length=9,primary_key=True)
+    dni_alumnos=models.CharField(max_length=9)
     num_faltas=models.IntegerField()
     num_retrasos=models.IntegerField()
     nom_asignatura=models.CharField(max_length=50)
+    id=models.IntegerField(primary_key=True)
     
 class Trabajos(models.Model):
     trabajo=models.CharField(max_length=50)
