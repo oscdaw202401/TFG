@@ -2,7 +2,7 @@ import datetime
 from django.contrib.auth import logout
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
-from Plazeduca.forms import AsignaturaForm, BuscarIncidenciasForm, CitaForm, Login, TrabajoForm
+from Plazeduca.forms import AsignaturaForm, BuscarIncidenciasForm, CitaForm, IncidenciaForm, Login, TrabajoForm
 from Plazeduca.models import Administrador, Alumnos, Asignaturas, Asistencias, Citas, Notas, Notificaciones, Profesor, Trabajos
 
 
@@ -330,7 +330,14 @@ def buscar_nota_asignatura_alumno(request):
 #             return None
 #     else:
 #         return listaAlumnos
-    
+def buscar_incidencias_dni_asignatura(my_frm):
+    try:
+        alumno=buscar_alumno_nombre_apellidos(my_frm)
+        inci=Asistencias.objects.get(dni_alumnos=alumno.dni,nom_asignatura=my_frm.cleaned_data["nom_asignatura"])
+    except Asistencias.DoesNotExist:
+            return None
+    else:
+        return inci
 
 def buscar_alumnos_tutoria(request):
     try:
@@ -407,6 +414,56 @@ def anadir_nota_profesor(request):
         my_frm=AsignaturaForm()
     return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
+def anadir_incidencia_profesor(request):
+    perfil=buscar_profesor_dni(request)
+    rol="profesor"
+    cambiado = False
+    if request.method=='POST':
+        my_frm=IncidenciaForm(request.POST)
+       
+        if(len(my_frm.changed_data)==2):
+            form_data = request.POST.copy()
+            form_data['falta'] = True
+            cambiado=True
+            my_frm = IncidenciaForm(form_data)
+        if my_frm.is_valid():
+            if cambiado == True:
+                my_frm.cleaned_data["falta"]=False
+            alumno=buscar_alumno_nombre_apellidos(my_frm)
+            if(alumno==None):
+                return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
+            incidencia=buscar_incidencias_dni_asignatura(my_frm)
+            if(incidencia is not None):
+                if(my_frm.cleaned_data["falta"] == True):
+                    incidencia.num_faltas+=1
+                if(my_frm.cleaned_data["falta"] == False):
+                    if(incidencia.num_retrasos >1):
+                        incidencia.num_faltas+=1
+                        incidencia.num_retrasos=0
+                    else:
+                        incidencia.num_retrasos+=1
+                Asistencias.objects.filter(dni_alumnos=incidencia.dni_alumnos,nom_asignatura=incidencia.nom_asignatura).update(
+                dni_alumnos=incidencia.dni_alumnos,
+                num_faltas=incidencia.num_faltas,
+                num_retrasos=incidencia.num_retrasos,
+                nom_asignatura=incidencia.nom_asignatura,
+            )
+                asis=Asistencias(incidencia.dni_alumnos,incidencia.num_faltas,incidencia.num_retrasos, incidencia.nom_asignatura)
+            else:
+                falta=0
+                retraso=0
+                if(my_frm.cleaned_data["falta"] == True):
+                    falta=1
+                else:
+                    retraso=1
+                asis=Asistencias(alumno.dni,falta,retraso, my_frm.cleaned_data["nom_asignatura"])
+                asis.save()
+            anadir_notificacion(asis,request)
+            return redirect("base")
+    else:
+        my_frm=IncidenciaForm()
+    return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"rol":rol})
+
 def incidencias_alumnos(request):
     perfil=buscar_profesor_dni(request)
     rol="profesor"
@@ -433,7 +490,6 @@ def anadir_notificacion(objeto,request):
     elif isinstance(objeto, Notas):
         noti = Notificaciones(lastId,objeto.examen, objeto.__class__.__name__,request.session["logueado"]["dni"],objeto.dni_alumno,datetime.date.today())
     elif isinstance(objeto, Asistencias):
-        #Cambiarlo
-        noti = Notificaciones(lastId,objeto.examen, objeto.__class__.__name__,request.session["logueado"]["dni"],objeto.dni_alumno,datetime.date.today())
+        noti = Notificaciones(lastId,objeto.nom_asignatura, objeto.__class__.__name__,request.session["logueado"]["dni"],objeto.dni_alumnos,datetime.date.today())
     noti.save()
     return redirect('base')
