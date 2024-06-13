@@ -437,7 +437,7 @@ def anadir_incidencia_profesor(request):
                 if(my_frm.cleaned_data["falta"] == True):
                     incidencia.num_faltas+=1
                 if(my_frm.cleaned_data["falta"] == False):
-                    if(incidencia.num_retrasos >1):
+                    if(incidencia.num_retrasos >= 1):
                         incidencia.num_faltas+=1
                         incidencia.num_retrasos=0
                     else:
