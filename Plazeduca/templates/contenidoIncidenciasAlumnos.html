@@ -54,16 +54,17 @@
         {% csrf_token %}
           <fieldset>
               {% if mensaje %}
+              <div class="alert alert-danger" style="width: 300px;">
                 {{mensaje}}
+              </div>
               {% endif %}
-
               <div class="form-group">
                 <span class="col-md-1 col-md-offset-2 text-center"></span>
-                <div class="col-md-8">
-                    {{form.receptor}}
+                <div class="col-md-8" style="margin-left:32px;">
+                  {{form.receptor}}
                 </div>
               </div>
-              <button type="submit" class="btn btn-dark btn-lg" style="margin-left: 15px;margin-top: 10px;">Buscar</button>
+              <button type="submit" class="btn btn-dark btn-lg" style="margin-top: -60px;margin-right:110px;float:right;position:relative;">Buscar</button>
           </fieldset>
       </form>
   <table class="table table-striped table-hover m-5">

@@ -83,8 +83,10 @@
                                 <input id="receptor" name="receptor" type="text" placeholder="Introduzca con quién quiere la reunión" class="form-control">
                             </div>
                             {% if mensaje %}
-    <p>{{mensaje}}</p>
-    {% endif%}
+                            <div class="alert alert-danger" style="width: 270px;margin-top:15px;margin-left:15px;">
+                            {{mensaje}}
+                            </div>
+                            {% endif %}
                         </div>
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"></span>

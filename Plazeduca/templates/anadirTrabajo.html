@@ -71,9 +71,7 @@
                 <form class="form-horizontal" method="POST" id="formulario">
                   {% csrf_token %}
                     <fieldset>
-                        {% if mensaje %}
-                            <p>{{mensaje}}</p>
-                            {% endif%}
+                      
                         <div class="alert alert-success" style="width: 150px;margin-left: 160px;margin-top: 70px;">Añadir trabajo</div>
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"></span>
@@ -100,6 +98,11 @@
                             <div class="col-md-8">
                                 {{form.receptor}}
                             </div>
+                            {% if mensaje %}
+                            <div class="alert alert-danger" style="width: 300px;margin-top:15px;margin-left:15px;">
+                            {{mensaje}}
+                            </div>
+                            {% endif %}
                         </div>
 
                         <div class="form-group">

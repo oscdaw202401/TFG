@@ -71,10 +71,12 @@
                 <form class="form-horizontal" method="POST" id="formulario">
                   {% csrf_token %}
                     <fieldset>
-                        {% if mensaje %}
-                            <p>{{mensaje}}</p>
-                            {% endif%}
-                        <div class="alert alert-success" style="width: 150px;margin-left: 160px;margin-top: 70px;">Añadir nota</div>
+                      {% if mensaje %}
+                      <div class="alert alert-danger" style="width: 300px;">
+                        {{mensaje}}
+                      </div>
+                      {% endif %}
+                        <div class="alert alert-success" style="width: 125px;margin-left: 160px;margin-top: 70px;">Añadir nota</div>
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"></span>
                             <div class="col-md-8">
@@ -94,7 +96,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <span>{{form.fecha_inicial.errors}}</span>
+                            <span>{{form.fecha_subida.errors}}</span>
                             <div class="col-md-8">
                                 {{form.fecha_subida}}
                             </div>

@@ -71,9 +71,11 @@
                 <form class="form-horizontal" method="POST" id="formulario">
                   {% csrf_token %}
                     <fieldset>
-                        {% if mensaje %}
-                            <p>{{mensaje}}</p>
-                            {% endif%}
+                      {% if mensaje %}
+                      <div class="alert alert-danger" style="width: 300px;">
+                        {{mensaje}}
+                      </div>
+                      {% endif %}
                         <div class="alert alert-success" style="width: 170px;margin-left: 140px;margin-top: 70px;">Añadir Incidencia</div>
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"></span>

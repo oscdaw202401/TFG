@@ -472,7 +472,7 @@ def incidencias_alumnos(request):
         if my_frm.is_valid():
             alumno=buscar_alumno_nombre_apellidos(my_frm)
             if(alumno==None):
-                return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
+                return render(request,'contenidoIncidenciasAlumnos.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
             inci=buscar_incidencias_dni(alumno)
             my_frm=BuscarIncidenciasForm()
             return render(request,'contenidoIncidenciasAlumnos.html',{'form':my_frm,"perfil":perfil,"incidencias":inci,"rol":rol})

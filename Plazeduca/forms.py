@@ -43,7 +43,7 @@ class AsignaturaForm(forms.Form):
     nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
     receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del alumno'}))
     fecha_subida = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de subida ','type': 'date'}))
-    nota = forms.IntegerField(required=True,widget=forms.NumberInput(attrs={'class': 'form-control','placeholder': 'Nota del alumno'}))
+    nota = forms.IntegerField(required=True,max_value=10,min_value=0,widget=forms.NumberInput(attrs={'class': 'form-control','placeholder': 'Nota del alumno'}))
     
     def clean_fecha(self):
         fecha_subida = self.cleaned_data["fecha_subida"]
