@@ -3,9 +3,9 @@ from .models import Alumnos,Asignaturas,Cursos,Profesor,Administrador
 # Register your models here.
 
 class AlumnoAdmin(admin.ModelAdmin):
-    list_display=("dni","usuario","email","telefono","fecha_nac","faltas","retrasos")
+    list_display=("dni","usuario","email","telefono","fecha_nac")
     list_filter=("usuario","fecha_nac","dni")
-    fields=["dni",("usuario","password"),("nombre","apellidos"),"direccion","email","telefono","cursos",("fecha_nac"),("faltas","retrasos")]
+    fields=["dni",("usuario","password"),("nombre","apellidos"),"direccion","email","telefono","cursos",("fecha_nac")]
 
 admin.site.register(Alumnos, AlumnoAdmin)
 
