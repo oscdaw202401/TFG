@@ -48,6 +48,7 @@
   </div>
 </div>
 <div class="container">
+  {% if rol == 'alumno' %}
   <table class="table table-striped table-hover m-5">
     <thead id="fila">
       <tr>
@@ -68,7 +69,30 @@
       {% endfor%}
     </tbody>
   </table>
-  {% if rol == 'profesor' %}
+  {% elif rol == 'profesor' %}
+  {% for alumno, notasdic in notas.items %}
+  <h2>{{alumno}}</h2>
+  <table class="table table-striped table-hover m-5">
+    <thead id="fila">
+      <tr>
+        <th scope="col">Examen</th>
+        <th scope="col">Asignatura</th>
+        <th scope="col">Nota</th>
+        <th scope="col">Fecha</th>
+      </tr>
+    </thead>
+    <tbody id="fila">
+            {% for notas in notasdic %}
+            <tr>
+              <td>{{ notas.examen }}</td>
+              <td>{{ notas.nom_asignatura }}</td>
+              <td>{{ notas.nota }}</td>
+              <td>{{ notas.fecha_subida | date:"d/m/Y" }}</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
   <button class="btn btn-dark btn-lg" style="margin-left: 300px;"><a href="{% url 'anadirNota' %}" id="link"> Añadir nota</a></button>
   {% endif %}
 </div>

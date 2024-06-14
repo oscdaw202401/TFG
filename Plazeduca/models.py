@@ -11,6 +11,8 @@ class Alumnos(models.Model):
     email=models.EmailField(max_length=50)
     direccion=models.CharField(max_length=50)
     cursos=models.CharField(max_length=20)
+    faltas=models.IntegerField()
+    retrasos=models.IntegerField()
     
     
 class Profesor(models.Model):

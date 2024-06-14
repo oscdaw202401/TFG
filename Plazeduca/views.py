@@ -311,25 +311,20 @@ def buscar_asignatura_profesor(request):
 def buscar_nota_asignatura_alumno(request):
     try:
         asig=buscar_asignatura_profesor(request)
-        listNotas=[]
-        for a in asig:
-            nota=Notas.objects.get_queryset().filter(nom_asignatura=a.nombre)
-            listNotas.extend(nota)
+        alumnos=Alumnos.objects.get_queryset().filter(cursos=asig[0].curso)
+        listaNotas=[]
+        dicNotas={}
+        for al in alumnos:
+            name=f"{al.nombre} {al.apellidos}"
+            for asi in asig:
+                nota=Notas.objects.get_queryset().filter(nom_asignatura=asi.nombre,dni_alumno=al.dni)
+                listaNotas.extend(nota)
+            dicNotas[name]=nota
     except Notas.DoesNotExist:
             return None
     else:
-        return listNotas
+        return dicNotas
     
-# def buscar_alumnos_por_nota(notas):
-#     try:
-#         listaAlumnos=[]
-#         for n in notas:
-#             alum=Alumnos.objects.get_queryset().filter(dni=n.dni_alumno)
-#             listaAlumnos.extend(alum)
-#     except Alumnos.DoesNotExist or listaAlumnos.count==0:
-#             return None
-#     else:
-#         return listaAlumnos
 def buscar_incidencias_dni_asignatura(my_frm):
     try:
         alumno=buscar_alumno_nombre_apellidos(my_frm)
