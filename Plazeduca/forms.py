@@ -14,7 +14,15 @@ class TrabajoForm(forms.Form):
     fecha_inicial = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de inicio','type': 'date'}))
     fecha_final = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de inicio','type': 'date'}))
     receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del Alumno'}))
-    nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
+    def __init__(self, *args, **kwargs):
+        opciones = kwargs.pop('opciones', [])
+        super(TrabajoForm, self).__init__(*args, **kwargs)
+        self.fields['opciones'] = forms.ChoiceField(
+            choices=opciones,
+            label='Elige una opción',
+            required=True,
+            widget=forms.Select,
+        )
 
 
     def clean_fecha(self):
@@ -40,7 +48,15 @@ class BuscarIncidenciasForm(forms.Form):
     
 class AsignaturaForm(forms.Form):
     examen=forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs= {'class':'form-control','placeholder':"Nombre del examen"}))
-    nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
+    def __init__(self, *args, **kwargs):
+        opciones = kwargs.pop('opciones', [])
+        super(AsignaturaForm, self).__init__(*args, **kwargs)
+        self.fields['opciones'] = forms.ChoiceField(
+            choices=opciones,
+            label='Elige una opción',
+            required=True,
+            widget=forms.Select,
+        )
     receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del alumno'}))
     fecha_subida = forms.DateField(required=True,widget=forms.DateInput(attrs={'class': 'form-control','placeholder': 'Fecha de subida ','type': 'date'}))
     nota = forms.IntegerField(required=True,max_value=10,min_value=0,widget=forms.NumberInput(attrs={'class': 'form-control','placeholder': 'Nota del alumno'}))
@@ -56,6 +72,14 @@ class AsignaturaForm(forms.Form):
 
 class IncidenciaForm(forms.Form):
     receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del Alumno'}))
-    nom_asignatura = forms.CharField(max_length=100,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre de la asignatura'}))
+    def __init__(self, *args, **kwargs):
+        opciones = kwargs.pop('opciones', [])
+        super(IncidenciaForm, self).__init__(*args, **kwargs)
+        self.fields['opciones'] = forms.ChoiceField(
+            choices=opciones,
+            label='Elige una opción',
+            required=True,
+            widget=forms.Select,
+        )
     falta = forms.BooleanField(required=True,widget=forms.RadioSelect(choices=((True, 'Falta'), (False, 'Retraso'))))
     

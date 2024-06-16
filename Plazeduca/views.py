@@ -328,7 +328,7 @@ def buscar_nota_asignatura_alumno(request):
 def buscar_incidencias_dni_asignatura(my_frm):
     try:
         alumno=buscar_alumno_nombre_apellidos(my_frm)
-        inci=Asistencias.objects.get(dni_alumnos=alumno.dni,nom_asignatura=my_frm.cleaned_data["nom_asignatura"])
+        inci=Asistencias.objects.get(dni_alumnos=alumno.dni,nom_asignatura=my_frm.cleaned_data["opciones"])
     except Asistencias.DoesNotExist:
             return None
     else:
@@ -375,46 +375,52 @@ def anadir_cita(request):
 
 def anadir_trabajo_profesor(request):
     perfil=buscar_profesor_dni(request)
+    asignaturas=buscar_asignatura_profesor(request)
+    asignaturas_lista=[(asignatura.nombre,asignatura.nombre) for asignatura in asignaturas]
     rol="profesor"
     if request.method=='POST':
-        my_frm=TrabajoForm(request.POST)
+        my_frm=TrabajoForm(request.POST,opciones=asignaturas_lista)
         if my_frm.is_valid():
             alumno=buscar_alumno_nombre_apellidos(my_frm)
             if(alumno==None):
                 return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
-            trab=Trabajos(my_frm.cleaned_data["trabajo"],my_frm.clean_fecha(),my_frm.clean_fecha_final(),alumno.dni,my_frm.cleaned_data["nom_asignatura"])
+            trab=Trabajos(my_frm.cleaned_data["trabajo"],my_frm.clean_fecha(),my_frm.clean_fecha_final(),alumno.dni,my_frm.cleaned_data["opciones"])
             anadir_notificacion(trab,request)
             trab.save()
             return redirect("base")
     else:
-        my_frm=TrabajoForm()
+        my_frm=TrabajoForm(opciones=asignaturas_lista)
     return render(request,'anadirTrabajo.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
 def anadir_nota_profesor(request):
     perfil=buscar_profesor_dni(request)
     rol="profesor"
+    asignaturas=buscar_asignatura_profesor(request)
+    asignaturas_lista=[(asignatura.nombre,asignatura.nombre) for asignatura in asignaturas]
     if request.method=='POST':
-        my_frm=AsignaturaForm(request.POST)
+        my_frm=AsignaturaForm(request.POST,opciones=asignaturas_lista)
         if my_frm.is_valid():
             alumno=buscar_alumno_nombre_apellidos(my_frm)
             if(alumno==None):
                 return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
             fecha_formateada= my_frm.cleaned_data["fecha_subida"].strftime('%Y-%m-%d')
             my_frm.cleaned_data["fecha_subida"]=fecha_formateada
-            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["nom_asignatura"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
+            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["opciones"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
             anadir_notificacion(asig,request)
             asig.save()
             return redirect("base")
     else:
-        my_frm=AsignaturaForm()
+        my_frm=AsignaturaForm(opciones=asignaturas_lista)
     return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
 def anadir_incidencia_profesor(request):
     perfil=buscar_profesor_dni(request)
     rol="profesor"
+    asignaturas=buscar_asignatura_profesor(request)
+    asignaturas_lista=[(asignatura.nombre,asignatura.nombre) for asignatura in asignaturas]
     cambiado = False
     if request.method=='POST':
-        my_frm=IncidenciaForm(request.POST)
+        my_frm=IncidenciaForm(request.POST,opciones=asignaturas_lista)
        
         if(len(my_frm.changed_data)==2):
             form_data = request.POST.copy()
@@ -451,12 +457,12 @@ def anadir_incidencia_profesor(request):
                     falta=1
                 else:
                     retraso=1
-                asis=Asistencias(alumno.dni,falta,retraso, my_frm.cleaned_data["nom_asignatura"])
+                asis=Asistencias(alumno.dni,falta,retraso, my_frm.cleaned_data["opciones"])
                 asis.save()
             anadir_notificacion(asis,request)
             return redirect("base")
     else:
-        my_frm=IncidenciaForm()
+        my_frm=IncidenciaForm(opciones=asignaturas_lista)
     return render(request,'anadirIncidencia.html',{'form':my_frm,"perfil":perfil,"rol":rol})
 
 def incidencias_alumnos(request):

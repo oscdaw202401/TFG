@@ -93,8 +93,14 @@
     </tbody>
   </table>
   {% endfor %}
-  <button class="btn btn-dark btn-lg" style="margin-left: 300px;"><a href="{% url 'anadirNota' %}" id="link"> Añadir nota</a></button>
-  {% endif %}
+  
 </div>
+<div class="text-center">
+  <button class="btn btn-dark btn-lg">
+    <a href="{% url 'anadirNota' %}" id="link"> Añadir nota</a>
+  </button>
+</div>
+{% endif %}
+
 </div>
 {%endblock%}
