@@ -72,6 +72,8 @@ class AsignaturaForm(forms.Form):
 
 class IncidenciaForm(forms.Form):
     receptor = forms.CharField(max_length=50,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Nombre del Alumno'}))
+    
+    falta = forms.BooleanField(required=True,widget=forms.RadioSelect(choices=((True, 'Falta'), (False, 'Retraso'))))
     def __init__(self, *args, **kwargs):
         opciones = kwargs.pop('opciones', [])
         super(IncidenciaForm, self).__init__(*args, **kwargs)
@@ -81,5 +83,4 @@ class IncidenciaForm(forms.Form):
             required=True,
             widget=forms.Select,
         )
-    falta = forms.BooleanField(required=True,widget=forms.RadioSelect(choices=((True, 'Falta'), (False, 'Retraso'))))
     

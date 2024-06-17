@@ -430,7 +430,7 @@ def anadir_incidencia_profesor(request):
             form_data = request.POST.copy()
             form_data['falta'] = True
             cambiado=True
-            my_frm = IncidenciaForm(form_data)
+            my_frm = IncidenciaForm(form_data,opciones=asignaturas_lista)
         if my_frm.is_valid():
             if cambiado == True:
                 my_frm.cleaned_data["falta"]=False
