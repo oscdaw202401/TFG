@@ -9,6 +9,10 @@
   text-decoration: none;
   color: whitesmoke;
 }
+body{
+  height: auto !important;
+  margin-bottom: 100px;
+}
 </style>
 <div class="container-fluid">
   <div class="row">
@@ -71,7 +75,9 @@
   </table>
   {% elif rol == 'profesor' %}
   {% for alumno, notasdic in notas.items %}
-  <h2>{{alumno}}</h2>
+  <center>
+  <div class="alert alert-success" style="width: 220px;margin-left: 100px;margin-top: 70px;">{{alumno}}</div>
+</center>
   <table class="table table-striped table-hover m-5">
     <thead id="fila">
       <tr>
@@ -96,7 +102,7 @@
   
 </div>
 <div class="text-center">
-  <button class="btn btn-dark btn-lg">
+  <button class="btn btn-dark btn-lg" style="margin-left: 110px;">
     <a href="{% url 'anadirNota' %}" id="link"> Añadir nota</a>
   </button>
 </div>

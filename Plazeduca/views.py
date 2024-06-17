@@ -408,7 +408,8 @@ def anadir_nota_profesor(request):
                 return render(request,'anadirNota.html',{'form':my_frm,"perfil":perfil,"mensaje":"El alumno introducido es incorrecto","rol":rol})
             fecha_formateada= my_frm.cleaned_data["fecha_subida"].strftime('%Y-%m-%d')
             my_frm.cleaned_data["fecha_subida"]=fecha_formateada
-            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,my_frm.cleaned_data["opciones"],my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
+            asignatura=my_frm.cleaned_data["opciones"].replace(" ", "").replace("\t", "").replace("\n", "")
+            asig=Notas(my_frm.cleaned_data["nota"],alumno.dni,asignatura,my_frm.clean_fecha(),my_frm.cleaned_data["examen"])
             anadir_notificacion(asig,request)
             asig.save()
             return redirect("base")
