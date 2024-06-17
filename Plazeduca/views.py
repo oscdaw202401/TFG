@@ -312,14 +312,17 @@ def buscar_nota_asignatura_alumno(request):
     try:
         asig=buscar_asignatura_profesor(request)
         alumnos=Alumnos.objects.get_queryset().filter(cursos=asig[0].curso)
-        listaNotas=[]
         dicNotas={}
         for al in alumnos:
+            listaNotas=[]
             name=f"{al.nombre} {al.apellidos}"
             for asi in asig:
-                nota=Notas.objects.get_queryset().filter(nom_asignatura=asi.nombre,dni_alumno=al.dni)
-                listaNotas.extend(nota)
-            dicNotas[name]=nota
+                asignatura=asi.nombre.replace(" ", "").replace("\t", "").replace("\n", "")
+                nota=Notas.objects.get_queryset().filter(nom_asignatura=asignatura,dni_alumno=al.dni)
+                for n in nota:
+                    n.nom_asignatura=asi.nombre
+                    listaNotas.append(n)
+            dicNotas[name]=listaNotas
     except Notas.DoesNotExist:
             return None
     else:

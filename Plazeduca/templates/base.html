@@ -35,9 +35,18 @@ function ver() {
 </script>
 
 <style>
-  body {
-    padding-top: 80px;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+body {
+    height: 100%;
+    padding-top: 80px;
+    min-height: 100vh;
+}
+
   .contenido {
     width: 40%;
     margin-left: auto;
@@ -45,15 +54,17 @@ function ver() {
     margin-top: 20px;
     padding: 5px;
   }
+
   footer {
     background-color: #80c766; 
     padding: 20px 0; 
     padding-right:40px;
     text-align: center; 
-    position: fixed; 
+    margin-top: auto;
     width: 100%; 
     bottom: 0; 
   }
+
   .logo{
     background-color:white;
     border-radius:40px;
