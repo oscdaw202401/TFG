@@ -1,0 +1,113 @@
+{%extends 'base.html' %}{%block contenido%}
+{% load static %}
+<style>
+  .camp{
+    width: 250px;
+    height:250px;
+    margin-left:20px;
+  }
+  .exa{
+    width: 250px;
+    height:250px;
+  }
+  .inc{
+    width:300px;
+    height:400px;
+    margin-bottom:200px;
+  }
+  #sombra{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  img:hover {
+    transform:scale(1.1);
+    transition:1s;
+  }
+  img{
+    transform:scale(1);
+    transition:1s;
+  }
+</style>
+    <div class="row move" id="contenedor">
+      <div class="col-lg-4 col-md-12 mb-4  mb-lg-0">
+        <a class="nav-link" href="{% url 'notasProf'%}" ><img
+        
+          src="{% static 'image/examen.png' %}"
+            class="exa shadow-1-strong rounded mb-4"
+            alt="Boat on Calm Water"
+            id="sombra"
+          />
+        </a>
+        <a class="nav-link" href="{% url 'trabajosProf'%}">
+        <img
+        src="{% static 'image/libros.jpg' %}"
+          class="w-100 shadow-1-strong rounded mb-4"
+          id="sombra"
+        />
+        </a>
+        
+      </div>
+    
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <a class="nav-link" href="{% url 'incidenciasAlumnos' %}">
+          <img
+        src="{% static 'image/exclamacion.png' %}"
+          class="inc shadow-1-strong rounded mb-4"
+          id="sombra"
+        />
+        </a>
+        
+        <a class="nav-link" href="{% url 'alumnosTutoria' %}"    >
+        <img
+        src="{% static 'image/clase.jpg' %}"
+          class="w-100 shadow-1-strong rounded mb-4"
+          id="sombra"
+          style="height: 225px;"
+        />
+      </a>
+      </div>   
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <a class="nav-link" href="{% url 'notificaciones' %}"    >
+        <img
+        src="{% static 'image/campana.png' %}"
+          class="camp shadow-1-strong rounded mb-4"
+          id="sombra"
+        />
+        </a>
+        <a class="nav-link" href="{% url 'calendario' %}"    >
+        <img
+        src="{% static 'image/calendario.jpg' %}"
+          class="w-100 shadow-1-strong rounded mb-4"
+          id="sombra"
+        />  
+      </a>
+      </div>
+    </div>
+
+    
+   
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 sidebar" id="slide">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column" id="centrar">
+          <li class="nav-item" id="enlace">
+            <a class="en" href="{% url 'encuesta'%}"> Encuesta de satisfaccion </a>
+          </li>
+          <li class="nav-item" id="enlace">
+            <a class="en" href="{% url 'trabajosProf'%}"> Trabajos </a>
+          </li>
+          <li class="nav-item" id="enlace">
+            <a class="en" href="{% url 'asignaturasProf' %}"> Asignaturas </a>
+          </li>
+          <li class="nav-item" id="enlace">
+            <a class="en" href="{% url 'notasProf'%}"> Boletín de notas </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+{%endblock%}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <!-- Para adaptar a los dispositivos móviles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- JavaScript de Bootstrap -->
+  <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+  <!-- CSS de Bootstrap -->
+  <link href="{% static 'bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'bootstrap4/css/contenidoAlumno.css' %}" rel="stylesheet" />
+  <link href="{% static 'bootstrap4/css/footer.css' %}" rel="stylesheet" />
+  <link href="{% static 'bootstrap4/css/header.css' %}" rel="stylesheet" />
+ 
+  
+</head>
+<script type="text/JavaScript">
+
+function ver() {
+    var x = document.getElementById("perfil");
+    if (x.classList.contains("esconder")) {
+      x.classList.remove("esconder");
+      x.classList.add("mostrar");
+    } else {
+      x.classList.remove("mostrar");
+      x.classList.add("esconder");
+    }
+
+}
+</script>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    padding-top: 80px;
+
+}
+  .contenido {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 5px;
+  }
+
+  footer {
+    background-color: #80c766; 
+    padding: 20px 0; 
+    padding-right:40px;
+    text-align: center; 
+    margin-top: auto;
+    width: 100%; 
+    bottom: 0; 
+  }
+
+  .logo{
+    background-color:white;
+    border-radius:40px;
+}
+.navbar-brand{
+  margin-left:10px;
+}
+#enlaces{
+  margin-left:150px;
+}
+#primero{
+  margin-left:225px;
+}
+.navbar{
+  background-color:#80c766;
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  z-index: 1000; 
+
+}
+#ultimo{
+  margin-left:250px;
+}
+#perfil{
+  float: right;
+  margin-top: 20px;
+  width: 255px;
+  margin-left: 20px;
+  margin-right: 22px;
+  overflow: hidden;
+  transition: max-height 1.2s ease-in-out;
+}
+
+#curso{
+  text-align: center;
+}
+.mostrar {
+  max-height: 400px;
+  
+}
+.esconder {
+  max-height: 0;
+}
+.card{
+  margin-top: 10px;
+}
+
+#slide{
+  background-color: #80c766;
+  margin-top: 150px;
+  margin-left: 50px;
+  border-radius: 10px;
+}
+#centrar{
+text-align: center;
+}
+#enlace{
+padding-top: 50px;
+padding-bottom: 50px;
+font-size: 20px;
+
+}
+.en{
+text-decoration: none;
+color: black;
+}
+.en:hover{
+text-decoration: none;
+color: black;
+}
+#info{
+  border-color: #80c766;
+  border-width: 3px;
+}
+</style>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light ">
+    <a href="{% url 'base' %}">
+    <img src="{% static 'image/login.png' %}" width="70" height="60" class="logo">
+  </a>
+    <a class="navbar-brand" href="{% url 'base' %}">Plazeduca</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" id="primero" href="{% url 'base' %}">Inicio <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        {% if rol == 'alumno' %}
+        <li class="nav-item">
+          <a class="nav-link" id="enlaces" href="{% url 'incidencias' %}">Incidencias</a>
+        </li>
+        {%elif rol == 'profesor' %}
+        <li class="nav-item">
+          <a class="nav-link" id="enlaces" href="{% url 'incidenciasAlumnos' %}">Incidencias Alumnos</a>
+        </li>
+        {%endif%}
+        <li class="nav-item">
+          <a class="nav-link" id="enlaces" href=" {% url 'notificaciones' %}">Notificaciones</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="enlaces" href="{% url 'cita' %}">Pedir reunión</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="enlaces" href="{%url 'cerrar' %}">Cerrar Sesión</a>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" onclick="ver()" id="ultimo"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-workspace text-dark" viewBox="0 0 16 16">
+            <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+            <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z"/>
+          </svg> </button>
+        </li>
+      </ul>
+      <div class="modal fade" id="edicion" role="dialog">
+
+      </div>
+    </div>
+  </nav>
+  <div class="col-lg-2 col-md-12 mb-4 mb-lg-0 esconder" id="perfil" >
+    <div class="card" style="width: 15rem; " id="info">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b>Curso:</b> {{perfil.cursos}}</li>
+        <li class="list-group-item"><b>DNI:</b> {{perfil.dni}}</li>
+        <li class="list-group-item">{{perfil.nombre}} {{perfil.apellidos}}</li>
+        <li class="list-group-item"><b>Telefono:</b> {{perfil.telefono}}</li>
+        <li class="list-group-item">{{perfil.email}}</li>
+        <li class="list-group-item"><b>Dirección: </b>{{perfil.direccion}}</li>
+        <li class="list-group-item"><b>Fecha de Nacimiento </b>{{perfil.fecha_nac | date:"d/m/Y"}}</li>
+      </ul>
+    </div>
+    
+  </div>
+  <div class="contenido">{%block contenido %}{%endblock%}</div>
+  
+  <footer>
+    <div class="container">
+      <span>Derechos de autor &copy; 2024 - Plazeduca</span>
+    </div>
+  </footer>
+</body>
+
+</html>
+

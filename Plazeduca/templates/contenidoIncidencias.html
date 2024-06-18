@@ -1,0 +1,67 @@
+{%extends 'base.html' %}{%block contenido%}
+<style>
+  #fila {
+    border-top: 2px#80c766 outset;
+    border-bottom: #80c766 2px outset;
+  }
+
+</style>
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 sidebar" id="slide">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column" id="centrar">
+          {% if rol == 'alumno' %}
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'trabajosAl' %}"> Trabajos </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'asignaturas' %}"> Asignaturas </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'notasAl' %}"> Boletín de notas </a>
+            </li>
+          {% elif rol == 'profesor' %}
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'trabajosProf' %}"> Trabajos </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'asignaturasProf' %}"> Asignaturas </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'notasProf' %}"> Boletín de notas </a>
+            </li>
+            {% endif %}
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+<div class="container">
+  <table class="table table-striped table-hover m-5">
+    <thead id="fila">
+      <tr>
+        <th scope="col">Asignatura</th>
+        <th scope="col">Faltas</th>
+        <th scope="col">Retrasos</th>
+      </tr>
+    </thead>
+    <tbody id="fila">
+      {% for inci in incidencias%}
+      <tr>
+            <td>{{inci.nom_asignatura}}</td>
+            <td>{{inci.num_faltas}}</td>
+            <td>{{inci.num_retrasos}}</td>
+      </tr>
+      {% endfor%}
+    </tbody>
+  </table>
+</div>
+</div>
+{%endblock%}

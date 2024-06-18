@@ -1,0 +1,134 @@
+{%extends 'base.html' %}{%block contenido%}
+<style>
+   #formulario{
+    margin-left: 30px;
+   }
+   #bloque{
+    margin-left: 160px;
+    margin-top: 20px;
+   }
+   h3{
+    margin-left: 150px;
+   }
+   #boton{
+    margin-top: 20px;
+    margin-right: 240px;
+   }
+   .encues:hover{
+    background-color: yellow;
+   }
+   input:hover{
+    border: black outset 2px;
+   }
+   textarea:hover{
+    border: black outset 2px;
+   }
+   input:focus{
+    border: black outset 2px;
+   }
+   select{
+    height:38px;
+    border-radius:4px;
+    width:424px;
+   }
+   select:hover{
+    border: black outset 2px;
+   }
+</style>
+<div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 sidebar" id="slide">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column" id="centrar">
+            {% if rol == 'alumno' %}
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'trabajosAl' %}"> Trabajos </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'asignaturas' %}"> Asignaturas </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'notasAl' %}"> Boletín de notas </a>
+            </li>
+          {% elif rol == 'profesor' %}
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'encuesta' %}"> Encuesta de satisfacción </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'trabajosProf' %}"> Trabajos </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'asignaturasProf' %}"> Asignaturas </a>
+            </li>
+            <li class="nav-item" id="enlace">
+              <a class="en" href="{% url 'notasProf' %}"> Boletín de notas </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" id="bloque">
+            <div class="well well-sm">
+                <form class="form-horizontal" method="POST" id="formulario">
+                  {% csrf_token %}
+                    <fieldset>
+                      
+                        <div class="alert alert-success" style="width: 150px;margin-left: 160px;margin-top: 70px;">Añadir trabajo</div>
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"></span>
+                            <div class="col-md-8">
+                                {{form.trabajo}}
+                            </div>
+                            
+                        </div>
+                        <div class="form-group">
+                            <span>{{form.fecha_inicial.errors}}</span>
+                            <div class="col-md-8">
+                                {{form.fecha_inicial}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span>{{form.fecha_final.errors}}</span>
+                            <div class="col-md-8">
+                                {{form.fecha_final}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"></i></span>
+                            <div class="col-md-8">
+                                {{form.receptor}}
+                            </div>
+                            {% if mensaje %}
+                            <div class="alert alert-danger" style="width: 300px;margin-top:15px;margin-left:15px;">
+                            {{mensaje}}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"></i></span>
+                            <div class="col-md-8">
+                                {{form.opciones}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-dark btn-lg" id="boton">Enviar</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
