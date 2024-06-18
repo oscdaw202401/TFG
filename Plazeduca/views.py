@@ -236,11 +236,18 @@ def buscar_asignaturas_alumno(request):
     
 def buscar_notas_al(request):
     try:
+        listaNotas=[]
         notas=Notas.objects.get_queryset().filter(dni_alumno=request.session["logueado"]["dni"])
+        for n in notas:
+            asig=Asignaturas.objects.all()
+            for a in asig:
+                if(a.nombre.replace(" ", "").replace("\t", "").replace("\n", "")==n.nom_asignatura):
+                    n.nom_asignatura=a.nombre
+            listaNotas.append(n)
     except Notas.DoesNotExist:
             return None
     else:
-        return notas
+        return listaNotas
     
 def buscar_trabajos_al(request):
     try:
